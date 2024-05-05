@@ -1,0 +1,21 @@
+{{>layouts/header}}
+
+<form class="container" action="/articles/create" method="post">
+    <div class="mb-3">
+        <label class="form-label">제목</label>
+        <!-- name에 DTO의 필드명을 지정함으로써 입력 폼과 DTO 필드 연결 -->
+        <input type="text" class="form-control" name="title">
+    </div>
+    <div class="mb-3">
+        <label class="form-label">내용</label>
+        <textarea class="form-control" rows="3" name="content"></textarea>
+    </div>
+    <div class="mb-3">
+        <p class="form-label">날짜</p>
+        <input class="form-control" type="text" name="date">
+    </div>
+    <!-- submit 버튼은 action에 해당하는 페이지로 정보를 보내줌 -->
+    <button type="submit" class="btn btn-primary">Submit</button>
+</form>
+
+{{>layouts/footer}}
