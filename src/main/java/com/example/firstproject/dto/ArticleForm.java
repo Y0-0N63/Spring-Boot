@@ -12,6 +12,10 @@ public class ArticleForm {
     private String content;
     private String date;
 
+    public Article toEntity() {
+        return null;
+    }
+
 //    // 전송 받은 제목과 내용 필드에 저장하는 생성자 추가
 //    public ArticleForm(String title, String content, String date) {
 //        this.title = title;
