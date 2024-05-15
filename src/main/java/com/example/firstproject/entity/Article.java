@@ -22,10 +22,6 @@ public class Article{
     @Column
     private String date;
 
-    public Article() {
-
-    }
-
 //    // Article 생성자 추가
 //    public Article(Long id, String title, String content, String date) {
 //        this.id = id;
