@@ -55,6 +55,7 @@ public class ArticleController {
     // 데이터 조회 요청 접수 (id를 통하여)
     @GetMapping("/articles/{id}")
     // 매개변수로 id를 받아옴
+    // @PathVariable : URL 요청으로 들어온 전달값->컨트롤러의 매개변수로 가져옴
     // 2. 모델에 데이터 등록
     public String show(@PathVariable Long id, Model model){
         log.info("id = "+id);
