@@ -5,9 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.ToString;
 
 @AllArgsConstructor
+@NoArgsConstructor
 @ToString
 @Entity
 public class Article{
@@ -21,6 +23,7 @@ public class Article{
 
     @Column
     private String date;
+
 
 //    // Article 생성자 추가
 //    public Article(Long id, String title, String content, String date) {

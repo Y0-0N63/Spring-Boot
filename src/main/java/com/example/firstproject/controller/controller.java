@@ -3,12 +3,27 @@ package com.example.firstproject.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Controller
 public class controller {
+    @GetMapping("/input")
+    public String input() {
+            return "input";
+    }
+
+    @PostMapping("/result")
+    public String result(Model model, int num1, int num2) {
+        int result=num1+num2;
+        model.addAttribute("num1", num1);
+        model.addAttribute("num2", num2);
+        model.addAttribute("result", result);
+        return "result";
+    }
+
     // '/hi'->URL 주소
     @GetMapping("/hi")
     public String niceToMeetYou(Model model){
