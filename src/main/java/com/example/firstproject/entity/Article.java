@@ -5,14 +5,18 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.ToString;
 
+import java.util.ArrayList;
+
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @ToString
 @Entity
-public class Article{
+public class Article extends ArrayList<Article> {
     @Id
     @GeneratedValue
     private Long id;
@@ -23,28 +27,4 @@ public class Article{
 
     @Column
     private String date;
-
-
-//    // Article 생성자 추가
-//    public Article(Long id, String title, String content, String date) {
-//        this.id = id;
-//        this.title = title;
-//        this.content = content;
-//        this.date=date;
-//    }
-//
-//    public Article() {
-//
-//    }
-//
-//    // toString() 메서드 추가
-//    @Override
-//    public String toString() {
-//        return "Article{" +
-//                "id=" + id +
-//                ", title='" + title + '\'' +
-//                ", content='" + content + '\'' +
-//                ", date='"+date+'\''+
-//                '}';
-//    }
 }
