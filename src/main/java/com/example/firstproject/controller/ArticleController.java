@@ -45,7 +45,7 @@
             Article saved=articleRepository.save(article);
             log.info(saved.toString());
     //        System.out.println(saved.toString());
-            return "articles/new"; // 404 에러 해결
+            return "redirect:/articles/" + saved.getId(); // 게시글의 id 번호를 사용하여 리다이렉트
         }
 
         // 데이터 조회 요청 접수 (id를 통하여)
@@ -61,7 +61,7 @@
             // 2. 모델에 데이터 등록
             model.addAttribute("article", articleEntity);
             // 3. 뷰 페이지 반환
-            return "articles/show";
+            return "articles/show"; // 목록으로 돌아가기 링크 넣을 뷰 파일
         }
 
         @GetMapping("/articles")
