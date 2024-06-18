@@ -58,6 +58,7 @@
             // 1. id를 조회해서 데이터 가져오기
             // 해당 id 값 없으면->null 값 반환
             Article articleEntity = articleRepository.findById(id).orElse(null);
+            log.info("articleEntity = ", articleEntity);
             // 2. 모델에 데이터 등록
             model.addAttribute("article", articleEntity);
             // 3. 뷰 페이지 반환

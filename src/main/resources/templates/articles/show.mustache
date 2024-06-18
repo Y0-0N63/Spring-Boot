@@ -5,20 +5,19 @@
         <th scope="col">Id</th>
         <th scope="col">Title</th>
         <th scope="col">Content</th>
+        <th scope="col">Date</th>
     </tr>
     </thead>
     <tbody>
-    {{#article}}
     <tr>
-        <th>{{id}}</th>
-        <td>{{title}}</td>
-        <td>{{content}}</td>
+        <th>{{article.id}}</th>
+        <td>{{article.title}}</td>
+        <td>{{article.content}}</td>
+        <td>{{article.date}}</td>
     </tr>
-    {{/article}}
     </tbody>
 </table>
 
 <a href="/articles/{{article.id}}/edit" class="btn btn-primary">Edit</a>
 <a href="/articles">Go to Article List</a>
-
 {{>layouts/footer}}
