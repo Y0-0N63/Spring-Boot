@@ -88,6 +88,15 @@
             return "articles/edit";
         }
 
+        @PostMapping("/articles/update")
+        public String update(ArticleForm form){
+            log.info(form.toString());
+            // DTO를 엔티티로 변환하기
+            // 엔티티를 DB에 저장하기
+            // 수정 결과 페이지로 리다이렉트하기
+            return "";
+        }
+
         @GetMapping("/articles/even")
         public String evenIndex(Model model){
             ArrayList<Article> articleEntityList = articleRepository.findAll();

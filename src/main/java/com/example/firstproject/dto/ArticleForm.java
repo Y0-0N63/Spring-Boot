@@ -8,6 +8,7 @@ import lombok.ToString;
 @ToString
 public class ArticleForm {
     // 제목과 내용 받을 필드
+    private Long id;
     private String title;
     private String content;
     private String date;
@@ -27,6 +28,6 @@ public class ArticleForm {
 //
     public Article toEntity() {
         // ID 정보 없음 -> null
-        return new Article(null, title, content, date);
+        return new Article(id, title, content, date);
     }
 }
