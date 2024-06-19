@@ -92,9 +92,31 @@
         public String update(ArticleForm form){
             log.info(form.toString());
             // DTO를 엔티티로 변환하기
+            Article articleEntity = form.toEntity();
+            log.info(articleEntity.toString());
             // 엔티티를 DB에 저장하기
+            // -1. DB에서 기존 데이터 가져오기
+            Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
+            // -2. 기존 데이터 값 갱신하기
+            if(target!=null){
+                articleRepository.save(articleEntity);
+            }
             // 수정 결과 페이지로 리다이렉트하기
-            return "";
+            return "redirect:/articles/"+articleEntity.getId();
+        }
+
+        @GetMapping("/articles/{id}/delete")
+        public String delete(@PathVariable Long id){
+            log.info("삭제 요청이 들어왔습니다!");
+            // 삭제할 대상 가져오기
+            Article target = articleRepository.findById(id).orElse(null);
+            log.info(target.toString());
+            // 대상 엔티티 삭제하기
+            if(target!=null){
+                articleRepository.delete(target);
+            }
+            // 결과 페이지로 리다이렉트하기
+            return "redirect:/articles";
         }
 
         @GetMapping("/articles/even")
