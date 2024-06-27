@@ -96,9 +96,9 @@
             Article articleEntity = form.toEntity();
             log.info(articleEntity.toString());
             // 엔티티를 DB에 저장하기
-            // -1. DB에서 기존 데이터 가져오기
+            // 1) DB에서 기존 데이터 가져오기
             Article target = articleRepository.findById(articleEntity.getId()).orElse(null);
-            // -2. 기존 데이터 값 갱신하기
+            // 2) 기존 데이터 값 갱신하기
             if(target!=null){
                 articleRepository.save(articleEntity);
             }
