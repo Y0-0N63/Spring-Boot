@@ -14,7 +14,7 @@ public class ArticleApiController {
     @Autowired
     private ArticleRepository articleRepository;
     // GET
-    @GetMapping("/api/articles/{id}")
+    @GetMapping("/api/articles")
     public List<Article> index(){
         return articleRepository.findAll();
     }
