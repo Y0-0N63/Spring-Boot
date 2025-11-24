@@ -2,8 +2,10 @@ package com.example.demo;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.context.annotation.ComponentScan;
 
 // SpringBootApplication에 필요한 필수 어노테이션과 설정을 모아둔 어노테이션
+// @ComponentScan
 @SpringBootApplication
 public class DemoProject1Application {
 	/* Spring Boot 프로젝트로 만든 애플리케이션의 실행을 담당하는 클래스
