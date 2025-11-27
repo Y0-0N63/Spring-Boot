@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 // instance : 개발자가 직접 new 연산자를 통해 만든 객체(관리하는 객체)
-// bean : Spring Container가 만들고, 관리하는 객체
+// bean : Spring에서 IOC를 이용해 Container가 생성하고, 생명 주기 제어를 담당하는 객체
 // IOC(제어의 반전) : 객체의 생성 및 생명 주기의 권한이 개발자가 아닌, 프레임워크에게 있다
 
 // @Controller : 요청, 응답을 제어하는 역할인 컨트롤러임을 명시 + Bean으로 등록하는 어노테이션
