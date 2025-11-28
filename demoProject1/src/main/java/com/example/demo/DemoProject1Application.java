@@ -4,7 +4,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.ComponentScan;
 
-// SpringBootApplication에 필요한 필수 어노테이션과 설정을 모아둔 어노테이션
+// @SpringBootApplication : SpringBootApplication에 필요한 필수 어노테이션과 설정을 모아둔 어노테이션
 // @ComponentScan(Bean Scanning) 수행
 // > @Component, @Repository, @Service, @Controller 어노테이션이 붙은 클래스 모두 찾아 > Bean으로 등록(객체로 생성)
 @SpringBootApplication

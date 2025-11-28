@@ -24,9 +24,9 @@ repositories {
 	mavenCentral()
 }
 
-// 외부 연결된 사이트(MVN Repository)에서 작성된 모듈, 라이브러리를 다운로드 받아 프로젝트에 자동 추가하기
+// 외부 연결된 사이트(MVN Repository 등)에서 작성된 모듈, 라이브러리를 다운로드 받아 프로젝트에 자동 추가하기
 // dependencies 블록 내 부분에 추가/삭제 후 파일 저장 > 프로젝트 우클릭 > Gradle > Refresh Gradle Project 클릭
-// > 추가/삭제 사실은 Project and Externam Dependencies에서 확인 가능
+// > 추가/삭제 사실은 Project and External Dependencies에서 확인 가능
 dependencies {
 	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
 	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
