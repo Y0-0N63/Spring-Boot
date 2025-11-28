@@ -102,4 +102,16 @@ public class ExampleController {
 		
 		return "example/ex4";
 	}
+	
+	@GetMapping("ex5")
+	public String ex5(Model model) {
+		model.addAttribute("message", "타임리프 + JavaScript 사용 연습");
+		model.addAttribute("num1", 12345);
+		
+		Student std = new Student();
+		std.setStudentNo("22222");
+		model.addAttribute("std", std);
+		
+		return "example/ex5";
+	}
 }

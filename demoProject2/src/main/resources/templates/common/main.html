@@ -6,6 +6,11 @@
     <title>thymeleaf</title>
   </head>
   <body>
+    <!-- fragment 사용하기 -->
+    <!-- templates를 기준으로 경로 작성, 확장자명 생략 -->
+    <th:block th:replace = "~{fragments/header}"></th:block>
+    <th:block th:replace = "~{fragments/footer :: footer2}"></th:block>
+    
     <h1>thymeleaf</h1>
 
     <h3>1. 템플릿 엔진</h3>
@@ -52,5 +57,8 @@ Spring Boot에서는 JSP가 아닌 Thymeleaf 사용을 권장하고 있음.
         <a href="/example/ex5">타임리프 예제5</a>
       </li>
     </ol>
+
+    <!-- footer.html의 footer1, footer2 중 footer1만 가져오기 -->
+    <th:block th:replace = "~{fragments/footer :: footer1}"></th:block>
   </body>
 </html>
