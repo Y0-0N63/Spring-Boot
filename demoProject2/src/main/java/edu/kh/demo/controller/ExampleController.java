@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -73,5 +74,32 @@ public class ExampleController {
 		
 		// src/main/resources/templates/example/ex2.html
 		return "example/ex2";
+	}
+	
+	@GetMapping("ex3")
+	public String ex3(Model model) {
+		model.addAttribute("key", "제목");
+		model.addAttribute("query", "검색어");
+		model.addAttribute("boardNo", 10);
+		
+		return "example/ex3";
+	}
+	
+	@GetMapping("ex3/{path}")
+	public String pathVariableTest(@PathVariable("path") int path) {
+		// controller에서 해야하는 로직이 동일한 경우 (example/ex3/1, example/3/2...) > 주소 중 {path} 부분의 값을 가져와 매개변수로 저장
+		// 해당 매개변수의 값을 controller단의 메서드에서 사용할 수 있도록 해줌 (이 값을 Service -> DAO -> DB)
+		// Request Scope에 값이 자동으로 세팅됨 (변수명(path)=값의 Key=value 형식)
+		
+		return "example/testResult";
+	}
+	
+	@GetMapping("ex4")
+	public String ex4(Model model) {
+		Student std = new Student("6789", "잠만보", 30);
+		model.addAttribute("std", std);
+		model.addAttribute("num", 1000);
+		
+		return "example/ex4";
 	}
 }
