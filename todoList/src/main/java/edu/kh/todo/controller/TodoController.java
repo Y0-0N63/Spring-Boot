@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -65,6 +66,74 @@ public class TodoController {
 			ra.addFlashAttribute("message", "해당 할 일이 존재하지 않습니다");
 		}
 		
+		return path;
+	}
+	
+	/**
+	 * 완료 여부 변경
+	 * **ModelAttribute**
+	 * @param todo : 커맨드 객체
+	 * 	- //@ModelAttriute와 함께 DTO 클래스를 사용하는 방식
+	 *  - 파라미터의 key와 Todo 객체의 빌드며오가 일치하면 > 일치하는 필드값이 파라미터의 value값으로 세팅된 상태
+	 *  - 즉, todo 객체의 todoNo와 complete 필드가 세팅 완료된 상태로 //@ModelAttribute는 생략 가능
+	 * @return
+	 */
+	@GetMapping("changeComplete")
+	public String changeComplete(@ModelAttribute Todo todo, RedirectAttributes ra) {
+		int result = service.changeComplete(todo);
+		
+		// 변경 성공 시 "변경 성공!", 실패 시 "변경 실패!"
+		//성공 여부와 관련 없이 같은 주소로 redirect
+		String message= null;
+		if(result > 0) message = "변경 성공!";
+		else 			message = "변경 실패...";
+		
+		ra.addFlashAttribute("message", message);
+		
+		// 상대경로 (현재 위치 중요)
+		//목표 주소 : /todo/detail?todoNo=1
+		return "redirect:detail?todoNo=" + todo.getTodoNo();
+	}
+	
+	/**
+	 * 수정 화면 전환 요청
+	 * @return
+	 */
+	@GetMapping("update")
+	public String todoUpdate(@RequestParam("todoNo") int todoNo, Model model) {
+		// 상세 조회 서비스 재활용 > 수정 화면에 출력할 기존 내용 필요
+		Todo todo = service.todoDetail(todoNo);
+		
+		model.addAttribute("todo", todo);
+		
+		// classpath:/templates/	.html
+		return "todo/update";
+	}
+	
+	/**
+	 * todoTitle="제목"&todoContent="상세내용"&todoNo=1
+	 * @return
+	 */
+	@PostMapping("update")
+	public String todoUpdate(Todo todo, RedirectAttributes ra) {
+		// 수정 서비스 호출 후 결과 반환받기
+		int result = service.todoUpdate(todo);
+		
+		String path = "redirect:";
+		String message = null;
+		
+		if(result > 0) {
+			// 해당 Todo의 상세 조회로 리다이렉트
+			path += "/todo/detail?todoNo=" + todo.getTodoNo();
+			message = "수정 성공!";
+		} else {
+			// 다시 수정 화면 리다이렉트 (Get 요청)
+			path += "/todo/update?todoNo=" + todo.getTodoNo();
+			message = "수정 실패...";
+		}
+		
+		ra.addFlashAttribute("message", message);
+				
 		return path;
 	}
 	
