@@ -63,8 +63,9 @@
 		WHERE TODO_NO = ${todoNo}
    	</select>
    	
-   	<delete id="todoDelete">
+   	<!-- 할 일 삭제 -->
+   	<delete id="todoDelete" parameterType="_int">
    		DELETE FROM TB_TODO
-		WHERE TODO_NO = ${todoNo}
+		WHERE TODO_NO = #{todoNo}
    	</delete>
 </mapper>

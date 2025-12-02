@@ -70,21 +70,22 @@ public class TodoController {
 	
 	// 삭제 요청/응답 메서드 todoDelete()
 	// 삭제 성공 시 > "/" redirect, message : "삭제 성공", 삭제 실패 시 > 해당 상세 페이지로 redirect, message : "삭제 실패"
-	@GetMapping("/delete?todoNo={todoNo}")
-	public String todoDelete(@PathVariable("todoNo") int todoNo) {
+	@GetMapping("delete")
+	public String todoDelete(@RequestParam("todoNo") int todoNo, RedirectAttributes rd) {
 		int result = service.todoDelete(todoNo);
 		
-		String message = null;
 		String path = null;
+		String message = null;
 				
 		if(result > 0) {
+			path = "/";
 			message = "삭제 성공";
-			path = "redirect:/";
 		} else {
-			path = "todo/detail/{todoNo}";
+			path = "todo/detail?todoNo=" + todoNo;
 			message = "삭제 실패";
 		}
 		
-		return path;
+		rd.addFlashAttribute("message", message);
+		return "redirect:" + path;
 	}
 }

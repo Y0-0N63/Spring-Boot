@@ -4,11 +4,18 @@ goToList.addEventListener("click", () => {
   location.href = "/"; // 메인페이지(/)로 Get 방식 요청
 });
 
+const completeBtn = document.querySelector(".complete-btn");
+completeBtn.addEventListener("click", (e) => {
+  // 요소.dataset : data-*속성에 저장된 값을 반환하는 키워드로 todo에서는 data-todo-no라고 세팅한 속성값을 얻어옴
+  // (html 표기법) data-todo-no > (js 표기법(카멜 케이스)) dataset.todoNo 로 변환
+  const todoNo = e.target.dataset.todoNo
+});
+
 // 삭제 버튼 클릭 시 동장
 const deleteBtn = document.querySelector("#deleteBtn");
 deleteBtn.addEventListener("click", (e) => {
   if(confirm("정말 삭제하시겠습니까?")) {
-    // 삭제 요청
+    // 삭제 요청 (location.href는 Get 방식 요청 )
     location.href = `/todo/delete?todoNo=${e.target.dataset.todoNo}`;
   }
 });
