@@ -50,8 +50,8 @@ public class TodoController {
 		return "redirect:/";
 	}
 	
-	@GetMapping("/detail/{todoNo}")
-	public String todoDetail(@PathVariable("todoNo") int todoNo, Model model, RedirectAttributes ra) {
+	@GetMapping("detail")
+	public String todoDetail(@RequestParam("todoNo") int todoNo, Model model, RedirectAttributes ra) {
 		Todo todo = service.todoDetail(todoNo);
 		
 		String path = null;
@@ -59,7 +59,7 @@ public class TodoController {
 		// 조회 결과가 있을 경우 detail.html forward
 		if(todo != null) {
 			path = "todo/detail";
-			model.addAttribute("todo", todo);
+			model.addAttribute("todo", todo); // request scope 값 세팅
 		} else {
 			// 조회 결과가 없을 경우 메인 페이지로 redirect
 			path = "redirect:/";
@@ -69,6 +69,7 @@ public class TodoController {
 		return path;
 	}
 	
+	//  /todo/changeComplete?todoNo=3&complete=Y 
 	/**
 	 * 완료 여부 변경
 	 * **ModelAttribute**
@@ -79,7 +80,7 @@ public class TodoController {
 	 * @return
 	 */
 	@GetMapping("changeComplete")
-	public String changeComplete(@ModelAttribute Todo todo, RedirectAttributes ra) {
+	public String changeComplete(/*@ModelAttribute*/ Todo todo, RedirectAttributes ra) {
 		int result = service.changeComplete(todo);
 		
 		// 변경 성공 시 "변경 성공!", 실패 시 "변경 실패!"
@@ -90,7 +91,7 @@ public class TodoController {
 		
 		ra.addFlashAttribute("message", message);
 		
-		// 상대경로 (현재 위치 중요)
+		// 상대경로 (현재 위치(/todo/changeComplete) 중요)
 		//목표 주소 : /todo/detail?todoNo=1
 		return "redirect:detail?todoNo=" + todo.getTodoNo();
 	}
@@ -140,7 +141,7 @@ public class TodoController {
 	// 삭제 요청/응답 메서드 todoDelete()
 	// 삭제 성공 시 > "/" redirect, message : "삭제 성공", 삭제 실패 시 > 해당 상세 페이지로 redirect, message : "삭제 실패"
 	@GetMapping("delete")
-	public String todoDelete(@RequestParam("todoNo") int todoNo, RedirectAttributes rd) {
+	public String todoDelete(@RequestParam("todoNo") int todoNo, RedirectAttributes ra) {
 		int result = service.todoDelete(todoNo);
 		
 		String path = null;
@@ -150,11 +151,11 @@ public class TodoController {
 			path = "/";
 			message = "삭제 성공";
 		} else {
-			path = "todo/detail?todoNo=" + todoNo;
+			path = "/todo/detail?todoNo=" + todoNo;
 			message = "삭제 실패";
 		}
 		
-		rd.addFlashAttribute("message", message);
+		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}
 }

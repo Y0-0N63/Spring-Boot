@@ -77,4 +77,21 @@ public class TodoServiceImpl implements TodoService {
 	public int todoDelete(int todoNo) {
 		return mapper.todoDelete(todoNo);
 	}
+
+	/* =================================== Ajax =================================== */
+
+	@Override
+	public int getTotalCount() {
+		return mapper.getTotalCount();
+	}
+
+	@Override
+	public int getCompleteCount() {
+		return mapper.getCompleteCount();
+	}
+
+	@Override
+	public List<Todo> selectList() {
+		return mapper.selectAll();
+	}
 }

@@ -32,4 +32,8 @@ public interface TodoMapper {
 
 	int todoUpdate(Todo todo);
 
+	/* =================================== Ajax =================================== */
+
+	int getTotalCount();
+
 }

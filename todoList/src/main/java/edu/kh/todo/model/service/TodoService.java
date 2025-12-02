@@ -1,5 +1,6 @@
 package edu.kh.todo.model.service;
 
+import java.util.List;
 import java.util.Map;
 
 import edu.kh.todo.model.dto.Todo;
@@ -18,6 +19,12 @@ public interface TodoService {
 	 */
 	Map<String, Object> selectAll();
 
+	/** 
+	 * 할 일 추가
+	 * @param todoTitle
+	 * @param todoContent
+	 * @return
+	 */
 	int addTodo(String todoTitle, String todoContent);
 
 	/**
@@ -47,5 +54,24 @@ public interface TodoService {
 	 * @return
 	 */
 	int todoUpdate(Todo todo);
+
+	/* =================================== Ajax =================================== */
+	/**
+	 * 전체 Todo 개수 조회
+	 * @return
+	 */
+	int getTotalCount();
+
+	/**
+	 * 완료된 Todo 개수 조회
+	 * @return
+	 */
+	int getCompleteCount();
+
+	/**
+	 * 전체 할 일 목록 조회
+	 * @return
+	 */
+	List<Todo> selectList();
 
 }
