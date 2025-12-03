@@ -128,8 +128,8 @@ addBtn.addEventListener("click", () => {
 const selectTodoList = () => {
   fetch("/ajax/selectList")
     // List 형태로 받은 resp를 resp.json 형태로 변환 (응답 결과를 해석하기 위해)
-    .then((resp) => resp.json)
-    .then((todoList) => {
+    .then(resp => resp.json())
+    .then(todoList => {
       // 매개변수 todoList :
       // 첫 번째 then에서 resp.text() / resp.json()을 했는가에 따라 > 단순 텍스트(String형, 하나의 문자열) / JS Object일 수 있음
       // List, Map, 객체 형태일 때 > JSON을 사용한다  //  단일 String 값의 경우, .text()로 받아도 무관하다
@@ -139,8 +139,7 @@ const selectTodoList = () => {
       // 기존에 출력되어 있던 할 일 목록을 모두 비우기
       tbody.innerHTML = "";
       // tbody에 tr/td 요소를 생성해서 내용 추가
-      for (let todo of todoList) {
-        // 향상된 for문
+      for (let todo of todoList) { // 향상된 for문
         // tr 태그 생성
         const tr = document.createElement("tr"); // <tr></tr>
         // JS 객체에 존재하는 key 모음 배열 생성
@@ -153,11 +152,12 @@ const selectTodoList = () => {
             const a = document.createElement("a"); // a태그 생성
             a.innerText = todo[key]; // todo["todoTitle"]
             a.href = "/ajax/detail?todoNo=" + todo.todoNo;
+            // <a href="/ajax/detail?todoNo=1">테스트 1 제목</a> : a 태그를 누르면 제출(submit) 이벤트 발생(기본적으로 이벤트를 갖고 있음)
             td.append(a);
             tr.append(td);
             // a태그 클릭 시 페이지 이동 막기(비동기 요청 사용을 위해)
             a.addEventListener("click", (e) => {
-              e.preventDefault(); // 기본 이벤트 방지
+              e.preventDefault(); // 기본 이벤트(a 태그의 submit 이벤트) 방지
               // 할 일 상세 조회 비동기 요청 함수 호출
               selectTodo(e.target.href);
             });
@@ -175,5 +175,56 @@ const selectTodoList = () => {
     });
 };
 
+// 비동기로 할 일을 상세 조회하는 함수
+const selectTodo = (url) => {
+  // fetch() 요청 보내기
+  // url == /ajax/detail?todoNo=1
+  fetch(url)
+  
+  // 서버로부터 받은 응답 객체 처리
+  // resp.text()로 사용할 시 > 객체가 하나의 문자열로 출력되기 때문에 > 객체 내 속성을 하나씩 뽑아오기가 힘듦
+  // .json()을 사용해야 JS object로 가져올 수 있음
+  // .then(resp => resp.text())
+  // .then (
+    //   result => {
+      //     console.log(JSON.parse(result)); // .text()를 사용해도 JS Object 형태로 변환할 수는 있긴 함
+      //   }
+      // )
+      .then(resp => resp.json())
+      .then(todo => {
+        // popup lyaer에 조회해온 값 출력
+        popupTodoNo.innerText = todo.todoNo;
+    popupTodoTitle.innerText = todo.todoTitle;
+    popupComplete.innerText = todo.complete;
+    popupRegDate.innerText = todo.regDate;
+    popupTodoContent.innerText = todo.todoContent;
+    
+    // popuplayer의 제목 클릭 시 popuplayer 보이게 하기
+    popupLayer.classList.remove("popup-hidden");
+  });
+};
+
+// popuplayer의 x 클릭 시 popuplayer 숨기기
+popupClose.addEventListener("click", () => {
+  // display:none 처리해주는 class추가
+  popupLayer.classList.add("popup-hidden");
+});
+
+// 삭제 버튼 클릭 시
+deleteBtn.addEventListener("click", () => {
+  // 취소 클릭 시(= confirm 창의 취소를 클릭 = False) 해당 함수 종료
+  if( !confirm("정말 삭제하시겠습니까?") ) {
+    return;
+  }
+
+  // 확인 버튼 클릭 시 삭제 비동기 요청 (DELETE 방식으로)
+  fetch("/ajax/delete", {
+    method : "DELETE",
+    headers : {"Content-Type" : "application/json"},
+    body : ,
+    
+  })
+});
 getTotalCount();
 getCompleteCount();
+selectTodoList();

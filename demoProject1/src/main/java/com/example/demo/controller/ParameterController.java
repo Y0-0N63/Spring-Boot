@@ -1,4 +1,4 @@
-			package com.example.demo.controller;
+	package com.example.demo.controller;
 
 import java.util.Arrays;
 import java.util.List;
@@ -26,7 +26,7 @@ public class ParameterController {
 	@GetMapping("main")
 	public String paramMain() {
 		
-		// src/main/resources/templates/param/param-main.html
+		// src/main/resources/templates/	 param/param-main 	.html
 		return "param/param-main";
 	}
 	
@@ -72,6 +72,7 @@ public class ParameterController {
 	 * -> "" (빈문자열)일 때는 에러 발생 X (파라미터가 존재하지 않는것이 아니라 name속성값="" 로 넘어오기 때문에)
 	 * defaultValue : 파라미터 중 일치하는 name속성값이 없을 경우에 대입할 값 지정. -> required=false 인 경우 사용
 	 */
+	// 요청 경로
 	@PostMapping("test2")
 	public String paramTest2(@RequestParam("title") String title, @RequestParam("writer") String writer,
 			// Method parameter 'price': Failed to convert value of type 'java.lang.String' to required type 'int'; For input string: ""
@@ -83,6 +84,8 @@ public class ParameterController {
 		log.debug("price : " + price);
 		log.debug("publisher : " + publisher);
 		
+		// return 구문에 작성하는 문자열 = 파일 경로
+		// forward(forward할 html의 파일 경로)하거나 redirect(재요청 주소로 'redirect:' 작성해야)
 		return "redirect:/param/main";
 	}
 	
@@ -110,16 +113,16 @@ public class ParameterController {
 	}
 	
 	
-	/**
-	 * 4. @ModelAttribute를 이용한 파라미터 얻어오기
+	/** 4. @ModelAttribute를 이용한 파라미터 얻어오기
 	 * @ModelAttribute
 	 * - DTO(또는 VO)와 함께 사용하는 어노테이션으로
 	 * 전달되는 파라미터의 name 속성값이 함께 사용되는 DTO의 필드명과 같다면 자동으로 setter를 호출해서 필드에 값을 지정
 	 * > ** DTO에 기본 생성자와 setter가 필수로 존재해야 함 **
 	 * @ModelAttribute를 이용해 값이 필드에 세팅된 객체를 "커맨드 객체"라고 부름
-	 * @ModelAttribute 생략 가능
-	 */
+	 * @ModelAttribute 생략 가능 */
 	@PostMapping("test4")
+	// 클라이언트의 요청 데이터를 Member 객체(DTO)에 넣기 위해 > 객체 생성이 우선 > @NoArgsConstructor 필요 (빈 객체 초기화) > 이후 setter로 값 대입
+	// + @AllArgsConstructor만 존재 = 기본 생성자가 없고, 인자가 있는 생성자만 존재 > 인자 채워줄 방법이 없어 오류 발생
 	public String paramTest4(/*@ModelAttribute*/ Member inputMember) {
 		// inputMember : Member(memberId=member01, memberPw=pass01, memberName=홍길동, memberAge=20)
 		log.debug("inputMember : " + inputMember);

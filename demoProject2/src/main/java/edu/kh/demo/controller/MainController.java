@@ -11,8 +11,8 @@ public class MainController {
 	public String mainPage() {
 		// forward : 요청 위임
 		// thymleaf : String Boot에서 사용하는 템플릿 엔진 (html 파일 사용)
-		// 접두사 : classpath:/tempaltes/
-		// 접미사 : .html
+		// 접두사 : classpath:/tempaltes/ 		접미사 : .html
+		// src/main/resources/templates/	common/main		.html
 		return "common/main";
 	}
 }

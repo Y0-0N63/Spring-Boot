@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import edu.kh.todo.model.dto.Todo;
@@ -84,5 +85,14 @@ public class AjaxController {
 		// 반환되는 값인 List = Java 전용 타입 > JS 인식 불가능 > JSON으로 변환해야
 		// ㄴ> HttpMessageConverter가 자동으로 JSON 형태로 변환하여 반환해줌!
 		return service.selectList();
+	}
+	
+	// 할 일 상세 조회
+	// @ResponseBody : Controller 메서드의 return 값이 view 이름이 아니라 HTTP 응답 본문에 직접 작성되어 클라이언트(브라우저)에게 전송되어야 함을 알려줌 
+	@ResponseBody // 비동기 요청을 보낸 곳으로 응답값을 보내줌
+	@GetMapping("detail")
+	public Todo selectTodo(@RequestParam("todoNo") int todoNo) {
+		// HttpMessageConverter : 자바 -> JSON : 형태 가공(변환)
+		return service.todoDetail(todoNo);
 	}
 }
