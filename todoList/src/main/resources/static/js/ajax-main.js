@@ -217,14 +217,70 @@ deleteBtn.addEventListener("click", () => {
     return;
   }
 
+  // 삭제할 할 일 번호 얻어오기
+  const todoNo = popupTodoNo.innerText;
+
   // 확인 버튼 클릭 시 삭제 비동기 요청 (DELETE 방식으로)
   fetch("/ajax/delete", {
-    method : "DELETE",
+    method : "DELETE", // @DeleteMapping() 처리
     headers : {"Content-Type" : "application/json"},
-    body : ,
-    
+    // body : JSON.stringfy(todoNo) > 로 명시하는 것이 옳음(엄격한 환경에서는 꼭 명시)
+    body : todoNo // 단일 값 > JSON 형태로 자동 변환되어 전달됨
+  })
+  .then(resp => resp.text())
+  .then(result => {
+    if(result > 0) {
+      alert("삭제 성공!");
+
+      // 상세 조회 팝업 레이어 닫기
+      popupLayer.classList.add("popup-hidden");
+
+      // 전체, 완료된 할 일 개수 다시 조회하기
+      getTotalCount();
+      getCompleteCount();
+      selectTodoList();
+    } else {
+      alert("삭제 실패...")
+    };
   })
 });
+
+// 완료 여부 변경 클릭 시
+changeComplete.addEventListener("click", () => {
+  // 현재 완료 여부를 반대값으로 변경한 값, 변경할 할 일 번호
+  const complete = popupComplete.innerText === 'Y' ? 'N' : 'Y';
+  const todoNo = popupTodoNo.innerText;
+
+  // SQL 수행에 필요한 두 값을 JS 객체로 묶음
+  const obj = {"todoNo" : todoNo,
+              "complete" : complete };
+
+  // 비동기로 완료 여부 변경 요청(PUT 요청 방식)
+  fetch("/ajax/changeComplete", {
+    method : "PUT", // @PutMapping
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(obj)
+  })
+  .then(resp => resp.text())
+  .then(result => {
+    if(result > 0) { // 성공
+      // selectTodo()를 호출해 사용할 경우 > 서버에 부하가 큼 > 완료 여부 뿐만 아니라 다른 속성도 다시 조회됨
+      // > 상세 조회 팝업에서 Y/N 바꾸기 (= complete로 교체해주기)
+      popupComplete.innerText = complete;
+
+      // 기존 완료된 Todo 개수(getCompleteCount())에서 +1 or -1
+      const count = Number(completeCount.innerText);
+      if(complete === 'Y') completeCount.innerText = count + 1;
+      else                 completeCount.innerText = count - 1;
+
+      // 서버 부하 줄이기나 가능하나 > 코드가 복잡 >> 인적 비용, 시간 비용을 따져 > 서버 부하를 선택하는 게 나을 수도 (트레이드 오프)
+      selectTodoList();
+    } else { // 실패
+      alert("완료 여부 변경 실패...")
+    }
+  })
+});
+
 getTotalCount();
 getCompleteCount();
 selectTodoList();
