@@ -281,6 +281,75 @@ changeComplete.addEventListener("click", () => {
   })
 });
 
+// 상세 조회 팝업에서 수정 버튼(#updateView) 클릭 시
+updateView.addEventListener("click", () => {
+  // 기존 상세 조회 팝업 레이어는 숨긴 후
+  popupLayer.classList.add("popup-hidden");
+
+  // 수정 팝업 레이어가 보이게끔 함
+  updateLayer.classList.remove("popup-hidden");
+
+  // 수정 레이어가 보일 때 > 상세 조회 팝업 레이어에 기존 작성된 제목과 내용을 얻어와 세팅
+  updateTitle.value = popupTodoTitle.innerText;
+
+  // innerText로 작성할 경우 > 개행이 무시됨
+  // innerHTML으로 작성할 경우 > 개행 문자 부분에 <br> 출력 > textarea 창에서 실제 줄바꿈으로 인식시켜주기 위해 "\n"으로 바꿔주기
+  updateContent.value = popupTodoContent.innerHTML.replaceAll("<br>", "\n");
+
+  // 수정 레이어의 수정 버튼에 data-todo-no 속성 추가하기
+  // <button id = "updateBtn" data-todo-no = "3">수정</button>과 동일
+  updateBtn.setAttribute("data-todo-no", popupTodoNo.innerText);
+});
+
+// 수정 레이어에서 취소 버튼 클릭 시
+updateCancel.addEventListener("click", () => {
+  // 수정 팝업 레이어 숨기고
+  updateLayer.classList.add("popup-hidden");
+
+  // 상세 팝업 레이어 보이게 하기
+  popupLayer.classList.remove("popup-hidden");
+});
+
+// 수정 레이어 -> 수정 버튼 클릭 시
+updateBtn.addEventListener("click", (e) => {
+  // 서버로 전달해야 하는 값을 JS 객체로 묶음
+  const obj = {
+    "todoNo" : e.target.dataset.todoNo,
+    "todoTitle" : updateTitle.value,
+    "todoContent" : updateContent.value
+  };
+
+  // 비동기 요청 (PUT)
+  fetch("/ajax/update", {
+    method : "PUT", // @PutMapping
+    headers : {"Content-Type" : "application/json"},
+    body : JSON.stringify(obj)
+  })
+  .then(resp => resp.text())
+  .then(result => {
+    if(result > 0) {
+      alert("수정 성공!!");
+      // 수정 레이어 숨기기
+      updateLayer.classList.add("popup-hidden");
+
+      // 상세 조회 레이어 보이기 > 수정한 내용이 출력되도록
+      popupTodoTitle.innerText = updateTitle.value;
+
+      popupTodoContent.innerHTML = updateContent.value.replaceAll("\n", "<br>");
+
+      popupLayer.classList.remove("popup-hidden");
+
+      selectTodoList(); // 전체 목록 다시 조회
+
+      updateTitle.value = "";
+      updateContent.value = "";
+      updateBtn.removeAttribute("data-todo-no");
+    } else {
+      alert("실패");
+    }
+  })
+});
+
 getTotalCount();
 getCompleteCount();
 selectTodoList();

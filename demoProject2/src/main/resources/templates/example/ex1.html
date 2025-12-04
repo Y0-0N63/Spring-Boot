@@ -14,14 +14,17 @@
     <th:block th:replace = "~{fragments/header}"></th:block>
     <pre>
 Spring EL(스프링 표현 언어)
-- ${key} : 변수, Model 등을 이용해서 세팅한 값 출력
+- ${key} : 변수, Model 등을 이용해서 세팅한 값 출력 (Model 객체에 담아 전달한 데이터 값 참조하고 출력할 때 사용)
+	- key : Controller에서 Model.addAttribute("key", value) 형태로 저장한 변수 이름
 
 th:text 속성 = "속성값"
-- 타임리프를 이용해서 속성값을 작성된 태그의 내용으로 출력(innerText)
+- 타임리프(Thymeleaf)를 이용해서 속성값을 작성된 태그의 내용(innerText)으로 출력
 
-**th 속성은 출력된 화면에서 보여지지 않는다!** > 해석된 후 사라짐
-  </pre
-    >
+**th 속성은 출력된 화면에서 보여지지 않는다!**
+  > Thymeleaf는 클라이언트(브라우저)가 HTML을 요청했을 때 > 웹 서버(Spring Boot...) 내에서 동작
+  > 서버는 Thymeleaf 템플릿 파일(.html)을 읽고 > 모든 th 속성을 찾아 해석(처리)함
+  > 해석이 완료되면 th:text="${username}"과 같은 th 속성은 최종 HTML 결과물에서 제거되어 사라짐 (= th 속성이 처리한 결과값만 HTML 요소의 내용이나 다른 속성으로 남아있음)
+  </pre>
 
     <!-- 개발자 도구를 사용해 보면 <h4>HTTPServletRequest로 전달한 값</h4> 으로 보임 -->
     <h4 th:text="${test1}">test1 값</h4>

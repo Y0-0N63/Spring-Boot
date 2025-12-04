@@ -22,7 +22,8 @@ public class ExampleController {
 	public String ex1(HttpServletRequest req, Model model) {
 		/* Servlet 내장 객체 범위 : page < request < session < application
 		 * *page scope는 사실상 Servlet에 존재하지 않는 셈 (JSP에만 존재)
-		 * Model (org.springframework.ui.Model) : Spring에서 데이터 전달 역할을 하는 객체로, request가 기본 scope
+		 * Model (org.springframework.ui.Model) : Spring에서 데이터를 전달(Controller가 처리한 데이터를 View(Thymeleaf HTML)로 전달)하는 객체로, request가 기본 scope
+		 *   : 
 		 * SessionAttribute와 함께 사용 시 session scope 변환
 		 
 		 *  [기본 사용법]
