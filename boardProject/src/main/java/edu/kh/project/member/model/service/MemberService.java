@@ -7,7 +7,8 @@ public interface MemberService {
 	/** [로그인]
 	 * @param inputMember
 	 * @return loginMember
+	 * @throws Exception 
 	 */
-	Member login(Member inputMember);
+	Member login(Member inputMember) throws Exception;
 
 }

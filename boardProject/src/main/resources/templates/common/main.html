@@ -45,8 +45,8 @@
                 </section>
               </fieldset>
 
+              <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
               <label>
-                <!-- label 태그 : input 태그의 제목을 나타내는 태그  -->
                 <input type="checkbox" name="saveId" />
                 아이디 저장
               </label>
@@ -66,22 +66,26 @@
           <th:block th:unless="${session.loginMember == null}">
             <article class="login-area">
               <a href="#">
-                <!-- 프로필 이미지 -->
-                <img
-                  src="/images/user.png"
+                <!-- 프로필 이미지 > 조건에 따라 > default or 본인 설정 -->
+                <!-- messages.properties에 작성된 기본 사용자 이미지 사용하기
+                  > session.loginMember.profileImg에 유저가 등록한 이미지 경로가 있다면 (= null이 아니라면)
+                    session.loginMember.profileImg에 저장된 경로를 사용하겠다/없다면(=null이라면)
+                    > /images/user.png(messages.properties에 등록) 사용 -->
+                <img th:with="user=#{user.default.image}"
+                  th:src="${session.loginMember.profileImg ?: user}"
                   id="memberProfile"
                   alt="프로필 이미지"
                 />
               </a>
 
               <!-- 닉네임, 이메일, 로그아웃 버튼 영역 -->
-              <div class="my-info">
+              <div class="my-info" th:object="${session.loginMember}">
                 <div>
-                  <a href="#" id="nickname">닉네임</a>
-                  <a href="#" id="logoutBtn">로그아웃</a>
+                  <a href="#" id="nickname" th:text="*{memberNickname}"></a>
+                  <a href="/member/logout" id="logoutBtn">로그아웃</a>
                 </div>
 
-                <p>이메일</p>
+                <p th:text="*{memberEmail}"></p>
               </div>
             </article>
           </th:block>
@@ -93,5 +97,6 @@
     <th:block th:replace="~{common/footer}"></th:block>
 
     <!-- script 추가-->
+    <script src="/js/main.js"></script>
   </body>
 </html>
