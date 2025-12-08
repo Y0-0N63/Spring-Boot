@@ -52,7 +52,7 @@
               </label>
 
               <article class="signup-find-area">
-                <a href="#">회원가입</a>
+                <a href="/member/signup">회원가입</a>
 
                 <span> | </span>
                 <a href="#">ID/PW 찾기</a>
@@ -71,6 +71,8 @@
                   > session.loginMember.profileImg에 유저가 등록한 이미지 경로가 있다면 (= null이 아니라면)
                     session.loginMember.profileImg에 저장된 경로를 사용하겠다/없다면(=null이라면)
                     > /images/user.png(messages.properties에 등록) 사용 -->
+                <!-- th:with : 지역 변수를 지정해서 사용 가능 -->
+                <!-- Elvis Operator : testValue ?; "Default값" -->
                 <img th:with="user=#{user.default.image}"
                   th:src="${session.loginMember.profileImg ?: user}"
                   id="memberProfile"
