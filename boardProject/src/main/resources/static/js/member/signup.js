@@ -9,11 +9,11 @@
 // - false == 해당 항목은 유효하지 않은 형식으로 작성됨
 const checkObj = {
     "memberEmail"     : false,
+    "authKey"         : false
     "memberPw"        : false,
     "memberPwConfirm" : false,
     "memberNickname"  : false,
     "memberTel"       : false,
-    "authKey"         : false
 };
 
 // ---------------------------------
@@ -382,7 +382,24 @@ memberNickname.addEventListener("input", (e) => {
     }
 
     // 3) 중복 검사 ajax요청 (유효한 경우)
-   
+    fetch("/member/checkNickname?memberNickname=" + inputNickname)
+    .then(resp => resp.text())
+    .then(count => {
+        if(count == 1) { // 중복일 때
+            nickMessage.innerText = "이미 사용 중인 닉네임입니다.";
+            nickMessage.classList.add("error");
+            nickMessage.classList.remove("confirm");
+            checkObj.memberNickname = false;
+            return;
+        }
+
+        // 중복이 아닌 경우
+        nickMessage.innerText = "사용 가능한 닉네임입니다."
+        nickMessage.classList.add("confirm");
+        nickMessage.classList.remove("error");
+        
+        checkObj.memberNickname = true;
+    })
 });
 
 // --------------------------------------
