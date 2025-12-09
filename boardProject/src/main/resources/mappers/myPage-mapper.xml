@@ -12,4 +12,14 @@
 		MEMBER_ADDRESS = #{memberAddress}
 		WHERE MEMBER_NO = #{memberNo}
 	</update>
+	
+	<select id="getPw">
+		SELECT MEMBER_PW FROM MEMBER
+		WHERE MEMBER_NO = #{memberNo}
+	</select>
+	
+	<update id="updatePw">
+		UPDATE "MEMBER" SET MEMBER_PW = #{memberPw}
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
 </mapper>
