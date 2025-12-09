@@ -317,7 +317,6 @@ const checkPw = () => {
     pwMessage.classList.add("error");
     pwMessage.classList.remove("confirm");
     checkObj.memberPwConfirm = false; // 비밀번호 확인 false
-
 };
 
 

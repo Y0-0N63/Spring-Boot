@@ -98,6 +98,28 @@ public class MyPageController {
 		// 회원 정보 수정 서비스 호출
 		int result = service.updateInfo(inputMember, memberAddress);
 		
+		String message = null;
+		
+		if(result > 0) {
+			message = "회원 정보가 수정되었습니다.";
+			
+			// loginMember에 DB상 업데이트된 내용으로 다시 세팅해주기
+			// -> loginMember는 세션에 저장된 로그인한 회원의 정보가 저장되어 있음 (= 로그인했을 당시의(= 수정 전) 기존 데이터)
+			// -> loginMember를 수정하면 세션에 저장된 로그인한 회원의 정보가 업데이트됨 > 세션에 있는 회원 정보와 DB 데이터를 동기화해야 함!
+			loginMember.setMemberNickname(inputMember.getMemberNickname());
+			loginMember.setMemberTel(inputMember.getMemberTel());
+			loginMember.setMemberAddress(inputMember.getMemberAddress());
+		} else {
+			message = "회원 정보 수정에 실패했습니다.";
+		}
+		
+		ra.addFlashAttribute("message", message);
+		
 		return "redirect:info"; // 재요청 경로 : /myPage/info
+	}
+	
+	@PostMapping("changePw")
+	public String changePw(@RequestParam("currentPw") String currentPw, ) {
+		
 	}
 }
