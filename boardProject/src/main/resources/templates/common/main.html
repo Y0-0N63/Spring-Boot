@@ -65,7 +65,7 @@
           <!-- unless : false일 때 수행 -->
           <th:block th:unless="${session.loginMember == null}">
             <article class="login-area">
-              <a href="#">
+              <a href="/myPage/profile">
                 <!-- 프로필 이미지 > 조건에 따라 > default or 본인 설정 -->
                 <!-- messages.properties에 작성된 기본 사용자 이미지 사용하기
                   > session.loginMember.profileImg에 유저가 등록한 이미지 경로가 있다면 (= null이 아니라면)
@@ -83,7 +83,7 @@
               <!-- 닉네임, 이메일, 로그아웃 버튼 영역 -->
               <div class="my-info" th:object="${session.loginMember}">
                 <div>
-                  <a href="#" id="nickname" th:text="*{memberNickname}"></a>
+                  <a href="/mypage/info" id="nickname" th:text="*{memberNickname}"></a>
                   <a href="/member/logout" id="logoutBtn">로그아웃</a>
                 </div>
 

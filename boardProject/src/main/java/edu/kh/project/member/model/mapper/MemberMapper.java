@@ -27,4 +27,6 @@ public interface MemberMapper {
 	 */
 	int checkNickname(String memberNickname);
 
+	int signup(Member inputMember);
+
 }
