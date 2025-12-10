@@ -16,10 +16,10 @@ public interface MyPageMapper {
 
 	/**
 	 * DB에 저장된 비밀번호 가져오기
-	 * @param loginMember
+	 * @param memberNo
 	 * @return
 	 */
-	String getPw(Member loginMember);
+	String getPw(int memberNo);
 
 	/**
 	 * 비밀번호를 업데이트하는 SQL문 작성
@@ -28,5 +28,10 @@ public interface MyPageMapper {
 	 */
 	int updatePw(Member loginMember);
 
-
+	/**
+	 * 회원 탈퇴 SQL
+	 * @param memberNo
+	 * @return
+	 */
+	int secession(int memberNo);
 }

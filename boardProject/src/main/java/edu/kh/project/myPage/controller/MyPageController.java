@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
+import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
@@ -118,6 +119,14 @@ public class MyPageController {
 		return "redirect:info"; // 재요청 경로 : /myPage/info
 	}
 	
+	/**
+	 * 비밀번호 변경
+	 * @param currentPw
+	 * @param newPw
+	 * @param loginMember : 세션에 등록된 현재 로그인한 회원 정보
+	 * @param ra : 리다이렉트 시 메시지 전달 역할
+	 * @return
+	 */
 	@PostMapping("changePw")
 	public String updatePw(@RequestParam("currentPw") String currentPw, @RequestParam("newPw") String newPw,
 							@SessionAttribute("loginMember") Member loginMember, RedirectAttributes ra) {
@@ -136,6 +145,44 @@ public class MyPageController {
 			path = "changePw";
 		}
 			
+		ra.addFlashAttribute("message", message);
+		return "redirect:" + path;
+	}
+	
+	/**
+	 * 회원 탈퇴
+	 * @param memberPw : 제출받은(사용자가 입력한) 현재 비밀번호
+	 * @param loginMember : 현재 로그인한 회원의 정보를 가지고 있는 객체(세션에서 꺼내옴)
+	 * 						> 회원 번호 필요 (SQL에서 조건으로 사용)
+	 * @param status : @SessionAttributes()와 함께 사용!!
+	 * @return
+	 */
+	@PostMapping("secession") // /myPage/secession  POST 요청 매핑
+	public String secession(@RequestParam("memberPw") String memberPw, @SessionAttribute("loginMember") Member loginMember,
+							SessionStatus status, RedirectAttributes ra) {
+		
+		// 로그인한 회원의 회원 번호 꺼내오기
+		int memberNo = loginMember.getMemberNo();
+		
+		// 서비스 호출 (입력받은 비밀번호, 로그인한 회원 번호)
+		int result = service.secession(memberPw, memberNo);
+		
+		String message = null;
+		String path = null;
+		
+		// 탈퇴 성공 - 메인페이지 재요청
+		if(result > 0 ) {
+			message = "탈퇴되었습니다.";
+			path = "/";
+			
+			// 탈퇴되었으므로 > 로그인이 되어있으면 안 됨 > 세션을 비워줘야(완료해줘야)
+			status.setComplete();
+		} else {
+			// 탈퇴 실패 - 탈퇴 페이지로 재요청
+			message = "비밀번호가 일치하지 않습니다.";
+			path = "secession";
+		}
+		
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
 	}

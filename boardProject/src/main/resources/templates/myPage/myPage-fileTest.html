@@ -37,18 +37,18 @@
 
 
           * application/x-www-form-urlencoded (기본값)
-           - URL 인코딩된 "문자열" 로 서버에 제출
+          - URL 인코딩된 "문자열" 로 서버에 제출
 
 
           * multipart/form-data  (무조건 POST에서만 동작)
 
-           - 제출되는 여러 데이터 타입에 맞춰서 인코딩하여 제출
+          - 제출되는 여러 데이터 타입에 맞춰서 인코딩하여 제출
             문자열 -> String
             숫자   -> String -> int/double(Spring이 처리)
             파일   -> 2진 데이터
 
           * text/plain
-           - 텍스트로 서버에 제출
+          - 텍스트로 서버에 제출
 
 
         </pre>
@@ -60,10 +60,8 @@
           <h3>업로드 테스트 1</h3>
           
           <!-- type="file" 도 결국에는 Parameter 
-              -> @RequestParam으로 처리 가능
-          -->
+              -> @RequestParam으로 처리 가능 -->
           <input type="file" name="uploadFile">
-         
 
           <button class="myPage-submit">제출하기</button>
         </form>
