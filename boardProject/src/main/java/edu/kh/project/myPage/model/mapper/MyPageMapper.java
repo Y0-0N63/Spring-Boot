@@ -29,7 +29,7 @@ public interface MyPageMapper {
 	int updatePw(Member loginMember);
 
 	/**
-	 * 회원 탈퇴 SQL
+	 * 회원 탈퇴 SQL (update)
 	 * @param memberNo
 	 * @return
 	 */

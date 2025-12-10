@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttribute;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
@@ -185,5 +186,36 @@ public class MyPageController {
 		
 		ra.addFlashAttribute("message", message);
 		return "redirect:" + path;
+	}
+	
+	// ================================ File ================================
+	
+	/* Spring에서 파일을 처리하는 방법
+	 * - enctype="multipart/form-data"로 클라이언트의 요청을 받으면(문자, 숫자, 파일 등이 섞여있는 요청)
+	 * > MultipartResolver(FileConfig에 정의)를 사용해 섞여있는 파라미터를 분리하는 작업을 함 
+	 * 문자열, 숫자 > String
+	 * 파일 > MultipartFile */
+	/**
+	 * @return
+	 * @throws Exception 
+	 */
+	@PostMapping("file/test1")  // /myPage/file/test1  POST 요청 매핑
+	public String fileUpload1(@RequestParam("uploadFile") MultipartFile uploadFile, RedirectAttributes ra) throws Exception {
+		
+		try {
+			// /myPage/flle/파일명.jpg
+			String path = service.fileUpload1(uploadFile);
+		
+			
+			// 파일이 실제로 서버 컴퓨터에 저장이 되어 웹에서 접근할 수 있도록 경로가 반환되었을 때
+			if(path != null) {
+				ra.addFlashAttribute("path", path);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("파일 예제 1 업로드 중 예외 발생:");
+		}
+				
+		return "redirect:/myPage/fileTest";
 	}
 }

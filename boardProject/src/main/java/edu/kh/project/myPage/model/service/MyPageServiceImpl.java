@@ -1,9 +1,13 @@
 package edu.kh.project.myPage.model.service;
 
+import java.io.File;
+import java.io.IOException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
 import edu.kh.project.member.model.dto.Member;
 import edu.kh.project.myPage.model.mapper.MyPageMapper;
@@ -71,5 +75,27 @@ public class MyPageServiceImpl implements MyPageService {
 		
 		// 일치할 경우
 		return mapper.secession(memberNo);
+	}
+
+	/**
+	 * 파일 업로드 테스트 1
+	 * @throws IOException 
+	 * @throws Exception 
+	 */
+	@Override
+	public String fileUpload1(MultipartFile uploadFile) throws Exception {
+		// 클라이언트가 실제로 업로드한 파일이 없을 경우
+		if(uploadFile.isEmpty()) {
+			return null;
+		}
+		
+		// 업로드한 파일이 있을 경우 > C:/uploadFiles/test/파일명으로 서버에 저장
+		uploadFile.transferTo(new File("C:/uploadFiles/test/" + uploadFile.getOriginalFilename()));
+		
+		// 웹에서 해당 파일에 접근할 수 있는 경로 만들어 반환
+		// 이미지가 최종 저장된 서버 컴퓨터상의 경로 > C:/uploadFiles/test/ 파일명.jpg
+		// 클라이언트가 브라우저에 해당 이미지를 보기 위해 요청하는 경로 <img src="경로">
+		
+		return "/myPage/file/" + uploadFile.getOriginalFilename();
 	}
 }
