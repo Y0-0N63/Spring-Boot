@@ -3,6 +3,7 @@ package edu.kh.project.myPage.model.mapper;
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.myPage.model.dto.UploadFile;
 
 @Mapper
 public interface MyPageMapper {
@@ -34,4 +35,11 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	int secession(int memberNo);
+
+	/**
+	 * 파일 정보를 DB에 삽입하는 SQL (INSERT)
+	 * @param uf
+	 * @return
+	 */
+	int insertUploadFile(UploadFile uf);
 }

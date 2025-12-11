@@ -218,4 +218,31 @@ public class MyPageController {
 				
 		return "redirect:/myPage/fileTest";
 	}
+	
+	@PostMapping("file/test2")
+	public String fileUpload2(@RequestParam("uploadFile") MultipartFile uploadFile, @SessionAttribute("loginMember") Member loginMember,
+							RedirectAttributes ra) {
+		
+		try {
+			// 로그인한 회원의 번호를 얻어오기 (누가 업로드했는지 알기 위해)
+			int memberNo = loginMember.getMemberNo();
+			
+			// 업로드된 파일 정보를 DB에도 INSERT해준 후 > 결과 행의 개수 반환받기
+			int result = service.fileUpload2(uploadFile, memberNo);
+			
+			String message = null;
+			
+			if(result > 0) {
+				message = "파일 업로드 성공";
+			} else {
+				message = "파일 업로드 실패";
+			}
+			
+			ra.addFlashAttribute("message", message);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.info("파일 업로드 테스트2 중 예외 발생");
+		}
+		return "redirect:/myPage/fileTest";
+	}
 }

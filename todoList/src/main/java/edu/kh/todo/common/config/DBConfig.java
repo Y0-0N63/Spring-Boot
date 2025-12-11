@@ -16,8 +16,8 @@ import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 
-/* @Configuration : 스프링 설정용 클래스임을 명시 (스프링이 해당 클래스를 설정 정보로 인식하고 사용)
- *					+ 객체로 생성해 내부 코드를 서버 실행 시 모두 바로 실행할 수 있게 함
+/* @Configuration : 스프링 설정용 클래스임을 스프링에게 명시 (스프링이 해당 클래스를 설정 정보로 인식하고 사용)
+ *					+ 객체로 생성해 내부 코드를 서버 실행 시 모두 바로 실행할 수 있게 함 (스프링이 @Configuration이 있는 코드부터 확인)
  * @PropertySource : properties 파일의 내용을 이용하겠다는 어노테이션
  *  				> 다른 properties도 추가하고 싶으면 어노테이션과 경로를 계속 추가 (classpath: -> src/main/resources) */
 @Configuration

@@ -17,18 +17,17 @@ import edu.kh.todo.model.service.TodoService;
 @Controller
 @RequestMapping("todo")
 public class TodoController {
-	@Autowired // DI : 의존성 주입(같은 타입 + 상속관계인 Bean을 의존성 주입)
+	@Autowired // TodoServiceImpl 클래스는 @Service를 통해 Bean으로 등록되어 있음 >
+	// @Autowired를 통해 TodoService와 같은 타입이거나 상속 관계인 Bean을 의존성 주입(DI)
 	private TodoService service;
 	
+	// 제출된 파라미터를 가져올 수 있는 방식들
+	// 1. HttpServletRequest req를 통해 getParameter()하여 얻어오기
+	// 2. @RequestParam()를 이용하여 얻어오기
+	// 3. @ModelAttribute와 DTO를 이용해 얻어오기
 	@PostMapping("add")
 	public String addTodo(@RequestParam("todoTitle") String todoTitle, @RequestParam("todoContent") String todoContent,
 							RedirectAttributes ra) {
-		// 1. HttpServletRequest reqp를 통해 getParameter()하여 얻어오기
-		// 2. @RequestParam()를 이용하여 얻어오기
-		// 3. @ModelAttribute와 DTO를 이용해 얻어오기
-		
-		// -----------
-		
 		// RedirectAttributes : 리다이렉트 시 값을 1회성으로 전달하는 객체
 		// RedirectAttributes.addFlashAttribute("key", value);
 		// -> request scope -> session scope로 잠시 변환 => 응답 전 : request scope

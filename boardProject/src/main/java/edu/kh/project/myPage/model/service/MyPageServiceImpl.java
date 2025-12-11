@@ -9,7 +9,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
+import edu.kh.project.common.util.Utility;
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.myPage.model.dto.UploadFile;
 import edu.kh.project.myPage.model.mapper.MyPageMapper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -79,12 +81,11 @@ public class MyPageServiceImpl implements MyPageService {
 
 	/**
 	 * 파일 업로드 테스트 1
-	 * @throws IOException 
 	 * @throws Exception 
 	 */
 	@Override
 	public String fileUpload1(MultipartFile uploadFile) throws Exception {
-		// 클라이언트가 실제로 업로드한 파일이 없을 경우
+		// 클라이언트가 실제로 업로드한 파일이 없을 경우 > uploadFile이 빈 상태로 넘어옴
 		if(uploadFile.isEmpty()) {
 			return null;
 		}
@@ -97,5 +98,50 @@ public class MyPageServiceImpl implements MyPageService {
 		// 클라이언트가 브라우저에 해당 이미지를 보기 위해 요청하는 경로 <img src="경로">
 		
 		return "/myPage/file/" + uploadFile.getOriginalFilename();
+	}
+
+	/**
+	 * 파일 업로드 테스트 2 (서버에 파일 저장 + DB에 파일 저장)
+	 */
+	@Override
+	public int fileUpload2(MultipartFile uploadFile, int memberNo) throws Exception {
+		// MultipartFile이 제공하는 메소드
+		// - isEmpty() : 실제로 업로드된 파일이 없을 경우 > true, 존재한다면 false
+		// - getSize() : 파일 크기
+		// - getOriginalFileName() : 원본 파일명
+		// - transferTo(경로) : 메모리 또는 임시 저장 경로에 업로드된 파일을 원하는 경로에 실제로 전송(서버의 어떤 폴더에 저장할지 지정)
+		
+		// 클라이언트가 실제로 업로드한 파일이 없을 경우 > uploadFile이 빈 상태로 넘어옴
+		if(uploadFile.isEmpty()) {
+			return 0;
+		}
+		
+		// 업로드된 파일이 있다면
+		// 1. 서버에 저장될 서버 폴더 경로 만들기
+		// 파일이 저장될 서버 폴더 경로
+		String folderPath = "C:/uploadFiles/test/";
+
+		// 클라이언트가 파일이 저장된 폴더에 접근할 수 있는 주소 (요청 주소)
+		String webPath = "/myPage/file/";
+		
+		// 2. DB에 전달할 데이터를 DTO로 묶어서 INSERT > webPath, memberNo, 원본파일명, 변경된파일명
+		String fileRename = Utility.fileRename(uploadFile.getOriginalFilename());
+		
+		// Builder 패턴을 이용해서 UploadFile 객체 생성하기
+		// Builder 패턴의 장점 > 반복되는 참조변수명, setter에서의 set 구문 생략 가능
+		// > method chaining을 이용하여 한 줄로 작석 가능
+		UploadFile uf = UploadFile.builder().memberNo(memberNo).filePath(webPath)
+						.fileOriginalName(uploadFile.getOriginalFilename()).fileRename(fileRename).build();
+		
+		int result = mapper.insertUploadFile(uf);
+		
+		// 3. 삽입(INSERT) 성공 시 파일을 지정된 서버 폴더에 저장
+		// 삽입 실패 시
+		if(result == 0) return 0;
+		
+		// 삽입 성공 시 > C:/uploadFiles/test/변경된파일명 으로 파일을 서버 컴퓨터에 저장하기
+		uploadFile.transferTo(new File(folderPath + fileRename));
+		
+		return result;
 	}
 }
