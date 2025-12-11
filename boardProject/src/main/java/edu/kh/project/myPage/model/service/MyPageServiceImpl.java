@@ -2,6 +2,7 @@ package edu.kh.project.myPage.model.service;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -143,5 +144,13 @@ public class MyPageServiceImpl implements MyPageService {
 		uploadFile.transferTo(new File(folderPath + fileRename));
 		
 		return result;
+	}
+
+	/**
+	 * 파일 목록 조회 서비스
+	 */
+	@Override
+	public List<UploadFile> fileList(int memberNo) {
+		return mapper.fileList(memberNo);
 	}
 }

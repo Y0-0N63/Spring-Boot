@@ -1,6 +1,9 @@
 package edu.kh.project.myPage.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +17,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import edu.kh.project.member.model.dto.Member;
+import edu.kh.project.myPage.model.dto.UploadFile;
 import edu.kh.project.myPage.model.service.MyPageService;
 import lombok.extern.slf4j.Slf4j;
 
@@ -26,9 +30,15 @@ import lombok.extern.slf4j.Slf4j;
 @RequestMapping("myPage")
 @Slf4j
 public class MyPageController {
+
+    private final BCryptPasswordEncoder bCryptPasswordEncoder;
 	
 	@Autowired
 	private MyPageService service;
+
+    MyPageController(BCryptPasswordEncoder bCryptPasswordEncoder) {
+        this.bCryptPasswordEncoder = bCryptPasswordEncoder;
+    }
 	
 	/**
 	 * 내 정보 조회
@@ -79,7 +89,14 @@ public class MyPageController {
 	}
 	
 	@GetMapping("fileList")
-	public String fileList() {
+	public String fileList(Model model, @SessionAttribute("loginMember") Member loginMember) {
+		// 파일 목록 조회 서비스 호출 (현재 로그인한 회원이 올린 이미지 가져오기)
+		int memberNo = loginMember.getMemberNo();
+		List<UploadFile> list = service.fileList(memberNo);
+		
+		// model에 list 담아서 forward
+		model.addAttribute("list", list);
+		
 		return "myPage/myPage-fileList";
 	}
 	

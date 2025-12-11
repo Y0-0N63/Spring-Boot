@@ -1,5 +1,7 @@
 package edu.kh.project.myPage.model.mapper;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.project.member.model.dto.Member;
@@ -42,4 +44,10 @@ public interface MyPageMapper {
 	 * @return
 	 */
 	int insertUploadFile(UploadFile uf);
+
+	/** 파일 목록을 조회하는 SQL
+	 * @param memberNo
+	 * @return
+	 */
+	List<UploadFile> fileList(int memberNo);
 }
