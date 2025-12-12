@@ -16,7 +16,7 @@ public class Utility {
 		// java.util.Date() : 현재 서버상의 시간을 저장한 자바 객체
 		String date = sdf.format(new Date());
 		
-		String number = String.format("%d05", seqNum);
+		String number = String.format("%05d", seqNum);
 		
 		seqNum++; // 1 증가
 		if(seqNum == 100000) seqNum = 1;

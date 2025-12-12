@@ -42,6 +42,10 @@ public class FileConfig implements WebMvcConfigurer {
 		// URL 요청 패턴을 서버의 실제 파일 경로와 연결하여 클라이언트가 특정 경로로 정적 파일에 접근할 수 있도록 설정
 		registry.addResourceHandler("/myPage/file/**").addResourceLocations("file:///c:/uploadFiles/test/");
 		// -> 클라이언트가 /myPage/file/**의 패턴으로 이미지를 요청할 때 > C:/uploadFiles/test/로 연결
+		
+		// ===== 프로필 이미지 업로드 =====
+		// 클라이언트가 /myPage/profile/**의 패턴으로 이미지를 요청할 때 > 서버 폴더 경로 중 C:/uploadFiles/profile/ 로 연결 
+		registry.addResourceHandler(profileResourceHandler).addResourceLocations(profileResourceLocation);
 	}
 	
 	// MultipartResolver 설정
@@ -65,6 +69,14 @@ public class FileConfig implements WebMvcConfigurer {
 		
 		return factory.createMultipartConfig();
 	}
+	
+	// ============================== Profile Image ==============================
+	// 프로필 이미지 관련 경로
+	@Value("${my.profile.resource-handler}")
+	private String profileResourceHandler;
+	
+	@Value("${my.profile.resource-location}")
+	private String profileResourceLocation;
 	
 	// MultipartResolver 객체를 생성하여 Bean으로 등록 > 위에서 만든 MultipartConfigElement를 자동으로 이용함
 	// MultipartResolver : MultipartFile을 처리해줌
