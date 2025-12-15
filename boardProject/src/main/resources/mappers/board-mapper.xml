@@ -9,5 +9,13 @@
 		SELECT BOARD_CODE "boardCode", BOARD_NAME "boardName"
 		FROM "BOARD_TYPE"
 		ORDER BY BOARD_CODE
-	</select>	
+	</select>
+	
+	<!-- 게시글 수 조회 -->
+	<select id = "getListCount">
+		SELECT COUNT(*)
+		FROM "BOARD"
+		WHERE BOARD_DEL_FL = 'N'
+		AND BOARD_CODE = #{boardCode}
+	</select>
 </mapper>
