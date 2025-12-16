@@ -68,13 +68,12 @@
 									
 									<!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
 									
-									
 									<!-- 검색 X -->
 									<a th:unless="${param.key}"
 									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"
 									th:text="*{boardTitle}">게시글 제목</a>
 		
-									<!-- 검색 O -->
+									<!-- 검색 O > 검색한 key와 query를 가지고 갈 수 있도록 함 -->
 									<a th:if="${param.key}"
 									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage}, key=${param.key}, query=${param.query})}"
 									th:text="*{boardTitle}">게시글 제목</a>
@@ -117,14 +116,14 @@
 				<!-- 일반 목록 조회 (검색 X )-->
 				<ul class="pagination" th:unless="${param.key}" th:object="${pagination}" >
 
-					<!-- 첫 페이지로 이동 -->
+					<!-- 첫 페이지로 이동 *&lt : < (less than, 미만) 
+					자리 마련이 된 {boardCode}의 경우, / 뒤 주소값으로 붙고, 그렇지 않은 cp는 queryString으로 연결됨 ex) localhost/board/2?cp=67-->
 					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=1)}">&lt;&lt;</a></li>
 
 					<!-- 이전 목록 마지막 번호로 이동 -->
 					<li><a th:href="@{/board/{boardCode}(boardCode=${boardCode}, cp=*{prevPage})}">&lt;</a></li>
 
 					<!-- 특정 페이지로 이동 -->
-					
 					<th:block th:each="i : *{#numbers.sequence(startPage, endPage)}">
 						
 						<!-- 현재 보고있는 페이지 -->
@@ -190,8 +189,8 @@
 
 			<!-- 검색창 -->
 			<!-- 현재 : /board/1 
-				목표 : /board/1?key=w&query=짱구
-			-->
+				목표 : /board/1?key=w&query=짱구 -->
+				<!-- @ : URL을 만들기 위한 시작, {boardCode} : URL 경로의 일부로 사용될 경로 변수, (...) : 변수 값 지정	(PathVariable)-->
 			<form th:action="@{{boardCode}(boardCode=${boardCode})}" method="get" id="boardSearch">
 
 				<select name="key" id="searchKey">

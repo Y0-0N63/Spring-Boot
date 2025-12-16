@@ -47,9 +47,17 @@ public class BoardController {
 			// 게시글 목록 조회 서비스 호출
 			map = service.selectBoardList(boardCode, cp);
 			
-		} else { // 검색인 경우
+		} else { // 검색인 경우 > paramMap에 key라는 k에 접근 > 매핑된 value 반환 ex) {key=w, query=짱구} > w 반환
+			// boardCode를 paramMap에 추가 > {key=w, query=짱구, boardCode=1}
+			paramMap.put("boardCode", boardCode);
+			
 			// 검색(내가 검색하고 싶은 게시글 목록 조회) 서비스 호출
+			map = service.searchList(paramMap, cp);
 		}
+		
+		// model(request scope)에 결과 값 등록
+		model.addAttribute("pagination", map.get("pagination"));
+		model.addAttribute("boardList", map.get("boardList"));
 		
 		// src/main/resources/templates/	board/boardList		.html로 forward
 		return "board/boardList";
