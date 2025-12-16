@@ -1,5 +1,6 @@
 package edu.kh.project.board.controller;
 
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,8 +10,13 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttribute;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import edu.kh.project.board.model.dto.Board;
+import edu.kh.project.board.model.dto.BoardImg;
 import edu.kh.project.board.model.service.BoardService;
+import edu.kh.project.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
 
 @Controller
@@ -62,4 +68,51 @@ public class BoardController {
 		// src/main/resources/templates/	board/boardList		.html로 forward
 		return "board/boardList";
 	}
+	
+	// 상세 조회 요청 주소
+	// @PathVariable("boardCode") int boardCode : URL에서 boardCode라는 이름으로 들어온 변수를 int형의 boardCode + Request Scope에 실어줌
+	@GetMapping("{boardCode:[0-9]+}/{boardNo:[0-9]+}")
+	public String boardDetail(@PathVariable("boardCode") int boardCode, @PathVariable("boardNo") int boardNo,
+							@SessionAttribute(value = "loginMember", required = false) Member loginMember, Model model, RedirectAttributes ra) {
+		
+		// 게시글 상세 조회 서비스 호출
+		// 1) Map으로 전달할 파라미터 묶기
+		Map<String, Integer> map = new HashMap<>();
+		map.put("boardCode", boardCode);
+		map.put("boardNo", boardNo);
+		
+		// 로그인 경우인 상태에만 memberNo를 map에 추가할 수 있게 하기
+		// LIKE_CHECK 시 이용 (로그인한 사람이 '좋아요'를 누른 게시글인지 체크하기 위해)
+		if(loginMember != null) {
+			map.put("memberNo", loginMember.getMemberNo());
+		}
+		
+		// 2) 서비스 호출 (한 개의 게시글 조회하기)
+		Board board = service.selectOne(map);
+		
+//		log.debug("조회된 board : " + board);
+		
+		String path = null;
+		
+		// 조회 결과가 없는 경우 (없는 게시글을 조회하고자 할 경우) > 현재 내가 보고 있는 게시판의 게시글 목록으로 redirect(재요청)
+		if(board == null) {
+			path = "redirect:/board/" + boardCode;
+			ra.addFlashAttribute("message", "게시글이 존재하지 않습니다.");
+		} else {
+			// 조회 결과가 있는 경우 > 상세 조회할 수 있는 페이지로 forward (src/main/resources/templates/	board/boardDetail	.html)
+			path = "board/boardDetail";
+			
+			// board - 게시글 일반 내용 + 게시글에 등록된 imageList + commentList
+			model.addAttribute("board", board);
+			
+			// 조회된 이미지 목록(imageList)이 있을 경우
+			if(!board.getImageList().isEmpty()) {
+				// 썸네일은 없을 수도 있음 > null로 만들어둔 후 > 썸네일이 있다면 값을 채워주기
+				BoardImg thumbnail = null;
+			}
+		}
+		
+		return path;
+	}
+	
 }

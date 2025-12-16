@@ -1,5 +1,7 @@
 package edu.kh.project.board.model.dto;
 
+import java.util.List;
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -21,10 +23,25 @@ public class Board {
 	private int boardCode;
 	private int memberNo;
 	
-	// Member 테이블 조인
+	// Member 테이블 조인 후 사용할 필드
 	private String memberNickname;
 	
 	// 목록 조회 시 서브쿼리 필드
 	private int commentCount;
 	private int likeCount;
+	
+	// 게시글 작성자 프로필 이미지
+	private String profileImg;
+
+	// 게시글의 썸네일 이미지
+	private String thumbnail;
+	
+	// 게시글 좋아요 여부 확인
+	private int likeCheck;
+	
+	// 게시글 이미지 목록
+	private List<BoardImg> imageList;
+	
+	// 게시글에 등록된 댓글 목록
+	private List<Comment> commentList;
 }

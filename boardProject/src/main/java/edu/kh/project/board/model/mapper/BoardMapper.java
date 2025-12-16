@@ -50,4 +50,12 @@ public interface BoardMapper {
 	 * @return
 	 */
 	List<Board> selectSearchList(Map<String, Object> paramMap, RowBounds rowBounds);
+
+
+	/**
+	 * 게시글 상세 조회 SQL 수행(BOARD, BOARD_IMG, COMMENT)
+	 * @param map
+	 * @return
+	 */
+	Board selectOne(Map<String, Integer> map);
 }

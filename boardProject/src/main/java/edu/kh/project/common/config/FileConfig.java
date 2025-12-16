@@ -35,6 +35,22 @@ public class FileConfig implements WebMvcConfigurer {
 	@Value("${spring.servlet.multipart.max-file-size}")
 	private long maxFileSize; // 10485760
 	
+	// ============================== Profile Image ==============================
+	// 프로필 이미지 관련 경로
+	@Value("${my.profile.resource-handler}")
+	private String profileResourceHandler;
+	
+	@Value("${my.profile.resource-location}")
+	private String profileResourceLocation;
+	
+	// ============================== Post Image ==============================
+	// 게시판 이미지 경로
+	@Value("${my.board.resource-handler}")
+	private String boardResourceHandler;
+	
+	@Value("${my.board.resource-location}")
+	private String boardResourceLocation;
+	
 	// 요청 주소에 따라 서버 컴퓨터의 어떤 경로에 접근할지 설정
 	@Override
 	public void addResourceHandlers(ResourceHandlerRegistry registry) {
@@ -46,6 +62,10 @@ public class FileConfig implements WebMvcConfigurer {
 		// ===== 프로필 이미지 업로드 =====
 		// 클라이언트가 /myPage/profile/**의 패턴으로 이미지를 요청할 때 > 서버 폴더 경로 중 C:/uploadFiles/profile/ 로 연결 
 		registry.addResourceHandler(profileResourceHandler).addResourceLocations(profileResourceLocation);
+		
+		// === 게시글 이미지 업로드 ===
+		// 클라이언트가 /images/board/** 패턴으로 이미지 요청할 때 서버 폴더 경로 중 C:/uploadFiles/board로 연결
+		registry.addResourceHandler(boardResourceHandler).addResourceLocations(boardResourceLocation);
 	}
 	
 	// MultipartResolver 설정
@@ -69,15 +89,7 @@ public class FileConfig implements WebMvcConfigurer {
 		
 		return factory.createMultipartConfig();
 	}
-	
-	// ============================== Profile Image ==============================
-	// 프로필 이미지 관련 경로
-	@Value("${my.profile.resource-handler}")
-	private String profileResourceHandler;
-	
-	@Value("${my.profile.resource-location}")
-	private String profileResourceLocation;
-	
+
 	// MultipartResolver 객체를 생성하여 Bean으로 등록 > 위에서 만든 MultipartConfigElement를 자동으로 이용함
 	// MultipartResolver : MultipartFile을 처리해줌
 	// > 클라이언트로부터 받은 multipart 요청을 처리하고, 그중 업로드된 파일을 추출하여 MultipartFile이라는 객체로 제공해주는 역할

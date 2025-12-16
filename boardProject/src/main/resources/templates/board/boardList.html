@@ -67,7 +67,6 @@
 									<!-- 썸네일 추가 예정 -->
 									
 									<!-- 상세 조회 주소에 cp가 포함된 이유 : 상세 -> 목록으로 돌아올 때 사용 -->
-									
 									<!-- 검색 X -->
 									<a th:unless="${param.key}"
 									th:href="@{/board/{boardCode}/{boardNo} (boardCode=${boardCode}, boardNo=*{boardNo}, cp=${pagination.currentPage})}"

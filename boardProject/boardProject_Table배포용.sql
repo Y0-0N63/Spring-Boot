@@ -473,7 +473,7 @@ INSERT INTO "BOARD_IMG" VALUES(
 COMMIT;
 
 SELECT * FROM "BOARD_IMG";
-
+SELECT * FROM "MEMBER";
 
 -- 댓글 샘플데이터
 INSERT INTO "COMMENT"	
@@ -487,30 +487,54 @@ VALUES( SEQ_COMMENT_NO.NEXTVAL, '부모 댓글 2',
 INSERT INTO "COMMENT"	
 VALUES( SEQ_COMMENT_NO.NEXTVAL, '부모 댓글 3',
 			  DEFAULT, DEFAULT,	2000, 1, NULL);
+-- 수행함
+
+SELECT * FROM "COMMENT"
+ORDER BY COMMENT_NO DESC;
 
 -- 부모 댓글 1의 자식 댓글
 INSERT INTO "COMMENT"	
 VALUES( SEQ_COMMENT_NO.NEXTVAL, '부모 1의 자식 1',
-			  DEFAULT, DEFAULT,	2000, 2, 2002);
+			  DEFAULT, DEFAULT,	2000, 2, 2001);
 			 
 INSERT INTO "COMMENT"	
 VALUES( SEQ_COMMENT_NO.NEXTVAL, '부모 1의 자식 2',
-			  DEFAULT, DEFAULT,	2000, 2, 2002);
-			 
+			  DEFAULT, DEFAULT,	2000, 2, 2001);
 			 
 -- 부모 댓글 2의 자식 댓글			 
 INSERT INTO "COMMENT"	
 VALUES( SEQ_COMMENT_NO.NEXTVAL, '부모 2의 자식 1',
-			  DEFAULT, DEFAULT,	2000, 2, 2003);
+			  DEFAULT, DEFAULT,	2000, 2, 2002);
 			 
 -- 부모 댓글 2의 자식 1의 자식 댓글			 
 INSERT INTO "COMMENT"	
 VALUES( SEQ_COMMENT_NO.NEXTVAL, '부모 2의 자식 1의 자식!!!',
-			  DEFAULT, DEFAULT,	2000, 2, 2007);
+			  DEFAULT, DEFAULT,	2000, 2, 2006);
 
-			 
 COMMIT;
 
+SELECT * FROM "COMMENT"
+WHERE BOARD_NO = 2000
+ORDER BY COMMENT_NO DESC;
+
+-- 계층형 쿼리(상세 조회한 게시글의 댓글 목록 조회)
+SELECT LEVEL, C.* FROM
+	(SELECT COMMENT_NO, COMMENT_CONTENT,
+	TO_CHAR(COMMENT_WRITE_DATE, 'YYYY"년" MM"월" DD"일" HH24"시" MI"분" SS"초"') COMMENT_WRITE_DATE,
+	BOARD_NO, MEMBER_NO, MEMBER_NICKNAME, PROFILE_IMG, PARENT_COMMENT_NO, COMMENT_DEL_FL
+	FROM "COMMENT"
+	JOIN MEMBER USING(MEMBER_NO)
+	WHERE BOARD_NO = 2000) C
+WHERE COMMENT_DEL_FL = 'N' -- 부모 자신의 댓글이 삭제되지 않았거나
+OR 0 != (SELECT COUNT(*) FROM "COMMENT" SUB
+		WHERE SUB.PARENT_COMMENT_NO = C.COMMENT_NO
+		AND COMMENT_DEL_FL = 'N') -- 해당 부모 댓글의 자식 댓글 중 삭제되지 않은 행이 하나라도 존재하면 > 부모 댓글을 조회 대상에 포함
+		-- >> 현재 댓글(C.COMMENT_NO)을 부모로 하는 자식 댓글 중 삭제되지 않은 댓글의 행의 개수를 셈
+		-- >> 삭제되지 않은 댓글이거나, 삭제된 댓글일지라도 그 아래에 활성 상태의 자식 댓글이 존재하면 > 본인(부모 댓글)이 조회되도록 하는 목적의 SQL
+START WITH PARENT_COMMENT_NO IS NULL -- 1레벨의 댓글(부모 댓글이 없는 댓글)
+CONNECT BY PRIOR COMMENT_NO = PARENT_COMMENT_NO
+ORDER SIBLINGS BY COMMENT_NO;
+		
 -------------------------------------------------------
 
 /* 좋아요 테이블(BOARD_LIKE) 샘플 데이터 추가 */
