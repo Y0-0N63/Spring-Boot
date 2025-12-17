@@ -1,5 +1,7 @@
 package edu.kh.project.member.model.service;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -82,4 +84,13 @@ public class MemberServiceImpl implements MemberService {
 		// 회원 가입 매퍼 메서드 호출
 		return mapper.signup(inputMember);
 	}
+	
+	/* ==================== Ajax ==================== */
+
+	// 회원 목록 조회 서비스
+	@Override
+	public List<Member> getMemberList() {
+		return mapper.getMemberList();
+	}
+
 }

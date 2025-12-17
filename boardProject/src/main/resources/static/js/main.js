@@ -49,3 +49,44 @@ if(loginEmail != null) {
     document.querySelector("input[name='saveId']").checked = true;
   }
 }
+
+// ==================== Ajax ====================
+
+// 회원 목록 조회 > #selectMemberList 버튼을 눌렀을 때 > #memberList 내부에 > <tr> 출력
+const selectMemberList = document.querySelector("#selectMemberList");
+const memberList = document.querySelector("#memberList");
+
+// td 요소를 만든 후 > text 추가 > td 반환
+const createTd = (text) => {
+  const td = document.createElement("td");
+  td.innerText = text;
+  return td;
+}
+
+// 회원 목록 조회 > fetch() API로 서버로 요청 보내기 > 응답 받아(첫 번째 then) > 화면에 출력(두 번째 then)
+function selectAllMember() {
+  fetch("/ajax/memberList")
+  // 화살표 함수에서 중괄호 사용 시 > return을 명시적으로 작성하지 않으면 > 함수는 undefined 반환
+  // > 따라서 중괄호 생략하거나 return response.json()으로 작성해야
+  .then(response => response.json()) 
+  .then(list => {
+    memberList.innerHTML = "";
+
+    // forEach(element, index) : 배열의 모든 요소를 돌며, 각 요소와 인덱스를 받는 함수 실행
+    list.forEach(member => {
+      // tr 생성 > tr 내부에 td 추가
+      const tr = document.createElement("tr");
+      
+      const keyList = ['memberNo', 'memberEmail', 'memberNickname', 'memberDelFl'];
+
+      keyList.forEach(key => {
+        tr.append(createTd(member[key]));
+      });
+
+      // tbody에 tr 추가
+      memberList.append(tr);
+    })
+  })
+}
+
+selectMemberList.addEventListener("click", selectAllMember);

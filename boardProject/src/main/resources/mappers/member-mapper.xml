@@ -34,4 +34,11 @@
 			#{memberEmail}, #{memberPw}, #{memberNickname}, 
 			#{memberTel}, #{memberAddress}, NULL, DEFAULT, DEFAULT, DEFAULT)
 	</insert>
+	
+	<!-- ==================== Ajax ==================== -->
+	
+	<!-- 회원 리스트 조회 -->
+	<select id="getMemberList">
+		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, MEMBER_DEL_FL FROM MEMBER
+	</select>
 </mapper>
