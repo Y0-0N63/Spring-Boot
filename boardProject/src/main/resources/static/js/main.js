@@ -96,6 +96,11 @@ const resetPw = document.querySelector("#resetPw");
 resetPw.addEventListener("click", () => {
   const resetMemberNo = document.querySelector("#resetMemberNo").value;
 
+  if(resetMemberNo.trim().length == 0) {
+    alert("회원 번호를 입력해주세요.");
+    return;
+  }
+
   fetch("/ajax/resetPw", {
     method : "PUT",
     headers : {"Content-Type" : "application/json"},
@@ -115,6 +120,11 @@ resetPw.addEventListener("click", () => {
 document.querySelector("#restorationBtn").addEventListener("click", () => {
   const memberNo = document.querySelector("#restorationMemberNo").value;
 
+  if(memberNo.trim().length == 0) {
+    alert("회원 번호를 입력해주세요.");
+    return;
+  }
+
   fetch("/ajax/restoreMember", {
     method : "PUT",
     headers : {"Content-Type" : "application/json"},
@@ -124,6 +134,8 @@ document.querySelector("#restorationBtn").addEventListener("click", () => {
   .then(result => {
     if(result > 0) {
       alert("회원 정보를 복구하였습니다.");
+      document.querySelector("#restorationMemberNo").value = "";
+      selectAllMember();
     } else {
       alert("회원 정보 복구에 실패하였습니다.");
     }
