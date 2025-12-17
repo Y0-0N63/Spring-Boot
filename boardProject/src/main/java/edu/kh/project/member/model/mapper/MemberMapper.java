@@ -1,6 +1,7 @@
 package edu.kh.project.member.model.mapper;
 
 import java.util.List;
+import java.util.Map;
 
 import org.apache.ibatis.annotations.Mapper;
 
@@ -43,5 +44,13 @@ public interface MemberMapper {
 	 * @return
 	 */
 	List<Member> getMemberList();
+
+	/**
+	 * 입력받은 회원의 비밀번호를 pass01!로 업데이트하는 SQL 실행
+	 * @param resetMemberNo
+	 * @param bcryptPassword
+	 * @return
+	 */
+	int resetPw(Map<String, Object> map);
 
 }

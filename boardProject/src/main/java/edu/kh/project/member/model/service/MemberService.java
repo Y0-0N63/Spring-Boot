@@ -42,4 +42,11 @@ public interface MemberService {
 	 */
 	List<Member> getMemberList();
 
+	/**
+	 * 회원의 비밀번호를 pass01!로 초기화
+	 * @param resetMemberNo
+	 * @return
+	 */
+	int resetPw(int resetMemberNo);
+
 }

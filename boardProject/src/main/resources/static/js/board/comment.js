@@ -479,12 +479,18 @@ const updateComment = (commentNo, btn) => {
   fetch("/comment", {
     method : "PUT",
     headers : {"Content-Type" : "application/json"},
+    // body : 실제 서버로 보낼 데이터
+    // data : JS 객체 형태 > 서버가 이해할 수 있도록 JSON 문자열로 변환
     body : JSON.stringify(data)
   })
+  // 서버(Spring Boot)에서 JSON 데이터를 받아 > DB 수정하고 > 결과로 숫자를 반환함
+  // 데이터가 JSON 배열이나 객체 형식이 아닌, 숫자 or 문자열일 때 > text()로
   .then(resp => resp.text())
   .then(result => {
     if(result > 0){
       alert("댓글이 수정 되었습니다");
+      // 댓글이 수정되었으니 > 화면에 보이는 댓글 목록을 최신 상태로 다시 불러오는 함수 호출
+      // 비동기이므로 > 페이지 새로고침 없이 목록만 갱신!
       selectCommentList();
     } else {
       alert("댓글 수정 실패");

@@ -70,6 +70,7 @@ function selectAllMember() {
   // > 따라서 중괄호 생략하거나 return response.json()으로 작성해야
   .then(response => response.json()) 
   .then(list => {
+    // memberList를 비워주지 않으면 > 버튼을 누를 때마다 표가 계속 추가(append)되어 출력됨
     memberList.innerHTML = "";
 
     // forEach(element, index) : 배열의 모든 요소를 돌며, 각 요소와 인덱스를 받는 함수 실행
@@ -88,5 +89,24 @@ function selectAllMember() {
     })
   })
 }
-
 selectMemberList.addEventListener("click", selectAllMember);
+
+// 특정 회원 비밀번호 초기화(#resetPw) > 입력받은 회원 번호(#resetMemberNo)의 비밀번호를 > pass01!로 초기화(PUT, Update)
+resetPw.addEventListener("click", () => {
+  const resetMemberNo = document.querySelector("#resetMemberNo").value;
+  const resetPw = document.querySelector("#resetPw");
+  
+  fetch("/ajax/resetPw", {
+    method : "PUT",
+    headers : {"Content-Type" : "application/json"},
+    body : resetMemberNo
+  })
+  .then(response => response.text())
+  .then(result => {
+    if(result > 0) {
+      alert("비밀번호가 pass01!로 초기화되었습니다.")
+    } else {
+      alert("비밀번호 초기화에 실패하였습니다.");
+    }
+  })
+})

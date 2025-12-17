@@ -41,4 +41,11 @@
 	<select id="getMemberList">
 		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, MEMBER_DEL_FL FROM MEMBER
 	</select>
+	
+	<!-- 입력받은 회원의 비밀번호를 pass01!로 업데이트 -->
+	<update id="resetPw">
+		UPDATE "MEMBER"
+		SET MEMBER_PW = #{bcryptPassword}
+		WHERE MEMBER_NO = #{resetMemberNo}
+	</update>
 </mapper>

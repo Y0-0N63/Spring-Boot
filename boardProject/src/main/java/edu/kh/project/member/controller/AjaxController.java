@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -25,5 +27,11 @@ public class AjaxController {
 		List<Member> memberList = service.getMemberList();
 		
 		return memberList;
+	}
+	
+	@ResponseBody // 작성하지 않을 시 오류 발생! (Unknown return value type: java.lang.Integer)
+	@PutMapping("resetPw")
+	public int resetPw(@RequestBody int resetMemberNo) {
+		return service.resetPw(resetMemberNo);
 	}
 }
