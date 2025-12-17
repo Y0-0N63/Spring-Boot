@@ -499,3 +499,6 @@ const updateComment = (commentNo, btn) => {
   })
   .catch(err => console.log(err));
 }
+
+// 특정 회원(회원번호) 탈퇴 복구 (Ajax)
+document.querySelector("#restorationBtn").addEventListener("click", 

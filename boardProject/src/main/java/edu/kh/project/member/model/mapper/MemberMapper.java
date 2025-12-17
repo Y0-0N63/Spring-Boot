@@ -53,4 +53,11 @@ public interface MemberMapper {
 	 */
 	int resetPw(Map<String, Object> map);
 
+	/**
+	 * 입력받은 회원의 탈퇴 여부(member_del_fl)을 'N'로 수정하는 SQL 실행
+	 * @param memberNo
+	 * @return
+	 */
+	int restoreMember(int memberNo);
+
 }

@@ -34,4 +34,10 @@ public class AjaxController {
 	public int resetPw(@RequestBody int resetMemberNo) {
 		return service.resetPw(resetMemberNo);
 	}
+	
+	@ResponseBody
+	@PutMapping("restoreMember")
+	public int restoreMember(@RequestBody int memberNo) {
+		return service.restoreMember(memberNo);
+	}
 }

@@ -108,4 +108,10 @@ public class MemberServiceImpl implements MemberService {
 		return mapper.resetPw(map);
 	}
 
+	// 특정 회원(회원번호) 탈퇴 복구 > 입력받은 회원 번호의 > 탈퇴 여부(member_del_fl)을 'N'로 수정(PUT)
+	@Override
+	public int restoreMember(int memberNo) {
+		return mapper.restoreMember(memberNo);
+	}
+
 }

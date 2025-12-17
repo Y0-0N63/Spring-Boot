@@ -92,10 +92,10 @@ function selectAllMember() {
 selectMemberList.addEventListener("click", selectAllMember);
 
 // 특정 회원 비밀번호 초기화(#resetPw) > 입력받은 회원 번호(#resetMemberNo)의 비밀번호를 > pass01!로 초기화(PUT, Update)
+const resetPw = document.querySelector("#resetPw");
 resetPw.addEventListener("click", () => {
   const resetMemberNo = document.querySelector("#resetMemberNo").value;
-  const resetPw = document.querySelector("#resetPw");
-  
+
   fetch("/ajax/resetPw", {
     method : "PUT",
     headers : {"Content-Type" : "application/json"},
@@ -109,4 +109,23 @@ resetPw.addEventListener("click", () => {
       alert("비밀번호 초기화에 실패하였습니다.");
     }
   })
-})
+});
+``
+// 특정 회원(회원번호) 탈퇴 복구 > 입력받은 회원 번호의 > 탈퇴 여부(member_del_fl)을 'N'로 수정(PUT)
+document.querySelector("#restorationBtn").addEventListener("click", () => {
+  const memberNo = document.querySelector("#restorationMemberNo").value;
+
+  fetch("/ajax/restoreMember", {
+    method : "PUT",
+    headers : {"Content-Type" : "application/json"},
+    body : memberNo
+  })
+  .then(response => response.text())
+  .then(result => {
+    if(result > 0) {
+      alert("회원 정보를 복구하였습니다.");
+    } else {
+      alert("회원 정보 복구에 실패하였습니다.");
+    }
+  })
+});

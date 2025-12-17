@@ -48,4 +48,10 @@
 		SET MEMBER_PW = #{bcryptPassword}
 		WHERE MEMBER_NO = #{resetMemberNo}
 	</update>
+	
+	<update id="restoreMember">
+		UPDATE "MEMBER"
+		SET MEMBER_DEL_FL = 'N'
+		WHERE MEMBER_NO = #{memberNo}
+	</update>
 </mapper>

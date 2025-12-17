@@ -49,4 +49,6 @@ public interface MemberService {
 	 */
 	int resetPw(int resetMemberNo);
 
+	int restoreMember(int memberNo);
+
 }
