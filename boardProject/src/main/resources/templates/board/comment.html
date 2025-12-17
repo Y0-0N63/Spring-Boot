@@ -1,10 +1,8 @@
 <div id="commentArea">
 	<!-- 댓글 목록 -->
 	<div class="comment-list-area">
-
 		<ul id="commentList">
-
-			<!-- 대댓글(자식)인 경우 child-comment 클래스 추가 -->
+			<!-- 대댓글(자식)인 경우(= 부모 댓글이 있는 경우) child-comment 클래스 추가 -->
 			<li class="comment-row" 
 					th:each="comment : ${board.commentList}" 
 					th:classappend="${comment.parentCommentNo} != 0 ? child-comment"
@@ -39,12 +37,9 @@
 	
 					</div>
 				</th:block>
-
 			</li>
-
 		</ul>
 	</div>
-
 
 	<!-- 댓글 작성 부분 -->
 	<div class="comment-write-area">
@@ -54,5 +49,4 @@
 			등록
 		</button>
 	</div>
-
 </div>

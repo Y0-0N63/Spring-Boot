@@ -53,9 +53,10 @@ public class AjaxController {
 	}
 	
 	// 전체 Todo 개수를 비동기 방식으로 조회하기
-	// forward/redirect를 하고자 하는 것이 아닌, '전체 Todo 개수'라는 데이터를 비동기 요청으로 보낸 클라이언트(브라우저)로 반환되는 것을 하고자 함
+	// '전체 Todo 개수'라는 데이터(숫자)를 비동기 요청으로 보낸 클라이언트(브라우저)로 반환하고자 함
+	// > forward/redirect를 하고자 하는 것이 아님! > return 값으로 forward/redirect 경로를 지정하지 않음 > 반환값이 String이 아닐 수 있음 
 	// > 반환되어야 하는 결과값의 자료형을 반환형에 써야 함 (= String으로 고정되어 있지 않음)
-	@ResponseBody // 반환값을 HTTP 응답 본문으로 직접 전송 (값을 그대로 돌려보냄) > return에 forward/redirect 값을 작성하지 않음
+	@ResponseBody // 반환값을 HTTP 응답 본문으로 직접 전송 (값을 그대로 JS측으로 돌려보냄)
 	@GetMapping("totalCount") // /ajax/totalCount로 온 Get 방식 요청을 매핑
 	public int getTotalCount() {
 		
