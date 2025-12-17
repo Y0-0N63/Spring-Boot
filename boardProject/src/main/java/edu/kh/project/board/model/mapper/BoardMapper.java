@@ -72,4 +72,25 @@ public interface BoardMapper {
 	 * @return
 	 */
 	int selectReadCount(int boardNo);
+
+	/**
+	 * 좋아요 해제 SQL(DELETE)
+	 * @param map
+	 * @return
+	 */
+	int deleteBoardLike(Map<String, Integer> map);
+
+	/**
+	 * 좋아요 체크 SQL(INSERT)
+	 * @param map
+	 * @return
+	 */
+	int insertBoardLike(Map<String, Integer> map);
+
+	/**
+	 * 좋아요 개수 조회(SELECT)
+	 * @param integer
+	 * @return
+	 */
+	int selectLikeCount(int boardNo);
 }
