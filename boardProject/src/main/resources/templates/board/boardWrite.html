@@ -15,6 +15,7 @@
         <th:block th:replace="~{common/header}"></th:block>
 
         <!-- <form th:action="@{/editBoard/{boardCode}/insert(boardCode=${boardCode})}"  -->
+        <!-- method="POST"와 enctype="multipart/form-data"는 세트라고 생각해주기 -->
         <form action="insert"
             method="POST"  class="board-write" id="boardWriteFrm" 
             enctype="multipart/form-data">
@@ -23,7 +24,6 @@
             <h1 class="board-title">
                 <input type="text" name="boardTitle" placeholder="제목" value="">
             </h1>
-
 
             <!-- 썸네일 영역 -->
             <h5>썸네일</h5>

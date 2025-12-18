@@ -30,7 +30,9 @@ public class AjaxController {
 	}
 	
 	@ResponseBody // 작성하지 않을 시 오류 발생! (Unknown return value type: java.lang.Integer)
+	// 비동기 통신은 데이터를 직접 보내나, 반환값인 int를 뷰(HTML) 파일 경로로 인식하기 때문에 타입 불일치 오류
 	@PutMapping("resetPw")
+	// @RequestBody : HTTP Body에 담아 보낸 데이터를 > Java 변수로 매핑(파싱)해줌
 	public int resetPw(@RequestBody int resetMemberNo) {
 		return service.resetPw(resetMemberNo);
 	}

@@ -200,13 +200,12 @@
 
 				<button>검색</button>
 			</form>
-
 		</section>
 	</main>
 
-
 	<th:block th:replace="~{common/footer}"></th:block>
 	
+	<!-- 타임리프 문법도 사용 가능한 자바스크립트 코드를 의미 -->
 	<script th:inline="javascript">
 		const boardCode = /*[[${boardCode}]]*/ "게시판 코드 번호";
 	</script>

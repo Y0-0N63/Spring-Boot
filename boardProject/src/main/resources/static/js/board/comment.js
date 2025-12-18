@@ -1,17 +1,13 @@
 /* REST(REpresentational State Transfer)  API
 
-- 자원(데이터,파일)을 이름(주소)으로 
-  구분(representational) 하여
-  자원의 상태(State)를 주고 받는 것(Transfer)
-
+- 자원(데이터,파일)을 이름(주소)으로 구분(representational) 하여 자원의 상태(State)를 주고 받는 것(Transfer)
   -> 자원의 이름(주소)를 명시하고 HTTP Method(GET,POST,PUT,DELETE) 를 이용해 지정된 자원에 대한 CRUD 진행
   자원의 이름(주소)는 하나만 지정 (ex. /comment)
 
   삽입 == POST    (Create)
   조회 == GET     (Read)
   수정 == PUT     (Update)
-  삭제 == DELETE  (Delete)
-*/
+  삭제 == DELETE  (Delete) */
 
 
 /* ***** 댓글 목록 조회(ajax) ***** */
@@ -499,6 +495,3 @@ const updateComment = (commentNo, btn) => {
   })
   .catch(err => console.log(err));
 }
-
-// 특정 회원(회원번호) 탈퇴 복구 (Ajax)
-document.querySelector("#restorationBtn").addEventListener("click", 

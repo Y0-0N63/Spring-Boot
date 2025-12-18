@@ -68,8 +68,10 @@ function selectAllMember() {
   fetch("/ajax/memberList")
   // 화살표 함수에서 중괄호 사용 시 > return을 명시적으로 작성하지 않으면 > 함수는 undefined 반환
   // > 따라서 중괄호 생략하거나 return response.json()으로 작성해야
-  .then(response => response.json()) 
-  .then(list => {
+  // response.json() : 서버에서 보내준 응답 본문(Body)을 읽어서, JSON 데이터를 자바스크립트 객체(Object)로 변환 (호출 즉시 데이터를 반환하는 것이 아님!)
+  // > 응답 본문의 실제 데이터를 모두 읽고 객체로 변환할 때까지 기다림 > 원하는 데이터(list 등)을 반환해줌 
+  .then(response => response.json()) // Promise 반환
+  .then(list => { // Promise가 이행(fulfilled)되면 실행
     // memberList를 비워주지 않으면 > 버튼을 누를 때마다 표가 계속 추가(append)되어 출력됨
     memberList.innerHTML = "";
 
@@ -92,8 +94,7 @@ function selectAllMember() {
 selectMemberList.addEventListener("click", selectAllMember);
 
 // 특정 회원 비밀번호 초기화(#resetPw) > 입력받은 회원 번호(#resetMemberNo)의 비밀번호를 > pass01!로 초기화(PUT, Update)
-const resetPw = document.querySelector("#resetPw");
-resetPw.addEventListener("click", () => {
+document.querySelector("#resetPw").addEventListener("click", () => {
   const resetMemberNo = document.querySelector("#resetMemberNo").value;
 
   if(resetMemberNo.trim().length == 0) {
@@ -115,7 +116,7 @@ resetPw.addEventListener("click", () => {
     }
   })
 });
-``
+
 // 특정 회원(회원번호) 탈퇴 복구 > 입력받은 회원 번호의 > 탈퇴 여부(member_del_fl)을 'N'로 수정(PUT)
 document.querySelector("#restorationBtn").addEventListener("click", () => {
   const memberNo = document.querySelector("#restorationMemberNo").value;
