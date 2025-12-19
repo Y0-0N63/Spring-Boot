@@ -44,11 +44,11 @@ public class BoardController {
 	 *  
 	 *  @param boardCode : 게시판 종류 구분 번호(1, 2, 3)
 	 *  @param cp : 현재 조회 요청한 페이지 번호(페이징 처리 관련 변수), 없으면 1(default)
-	 *  @param model : forward할 때 관련 객체를 담아서 전달해줌
+	 *  @param model : forward할 때 관련 객체를 담아서 전달해줌 (데이터를 뷰(HTML)로 전달하는 객체)
 	 *  @param paramMap : 검색했을 경우 queryString에 {key=t, query=폭탄}로 전달됨 > 제출된 파라미터를 key, query를 Map 형태로 저장
 	 * @return
 	 */
-	@GetMapping("{boardCode:[0-9]+}")
+		@GetMapping("{boardCode:[0-9]+}")
 	public String selectBoardList(@PathVariable("boardCode") int boardCode, @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								Model model, @RequestParam Map<String, Object> paramMap) {
 
@@ -70,6 +70,7 @@ public class BoardController {
 		}
 		
 		// model(request scope)에 결과 값 등록
+		// request : 요청~응답, session : 브라우저 종료 시까지, application : 서버 종료 시까지
 		model.addAttribute("pagination", map.get("pagination"));
 		model.addAttribute("boardList", map.get("boardList"));
 		

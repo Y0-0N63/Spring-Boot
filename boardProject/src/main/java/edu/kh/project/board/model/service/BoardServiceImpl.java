@@ -38,8 +38,9 @@ public class BoardServiceImpl implements BoardService {
 		// *Pagination 객체 : 게시글 목록 구성에 필요한 값을 저장한 객체
 		Pagination pagination = new Pagination(cp, listCount);
 		
-		// 3. 특정 게시판의 지정된 페이지 목록 조회
-		// ROWBOUNDS 객체(MyBatis 제공) : 지정된 크기만큼 건너뛰고(offset) 제한된 크기만큼(limit)의 행을 조회하는 객체 > 페이징 처리가 간단해짐
+		// 3. 특정 게시판의 지정된 페이지 목록 조회 (특정 페이지에 10개만 출력)
+		// ROWBOUNDS 객체(MyBatis 제공) : 지정된 크기(한 페이지 목록에 보여지는 게시글 수)만큼 건너뛰고(offset)
+		// 제한된 크기만큼(limit)의 행을 조회하는 객체 > 페이징 처리가 간단해짐
 		int limit = pagination.getLimit(); // 10개
 		int offset = (cp - 1) * limit; // 1page -> 0 = 0개 건너뛰고 10개 조회, 2page -> 10 = 10개 건너뛰고 10개 조회
 		RowBounds rowBounds = new RowBounds(offset, limit);

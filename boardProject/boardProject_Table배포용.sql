@@ -403,6 +403,7 @@ COMMIT;
 
 SELECT * FROM "BOARD" ORDER BY BOARD_NO DESC;
 
+-- 게시글 목록 조회하기
 -- 번호/제목[댓글개수]/작성자닉네임/작성일/조회수/좋아요개수
 -- 최신순 > BOARD_NO DESC
 SELECT BOARD_NO, BOARD_TITLE, MEMBER_NICKNAME, READ_COUNT,

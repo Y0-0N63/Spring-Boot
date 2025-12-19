@@ -9,8 +9,8 @@ public class Pagination {
 	private int currentPage;		// 현재 페이지 번호
 	private int listCount;			// 전체 게시글 수
 	
-	private int limit = 10;			// 한 페이지 목록에 보여지는 게시글 수
-	private int pageSize = 10;		// 보여질 페이지 번호 개수
+	private int limit = 10;			// 한 페이지 목록에 보여지는 게시글 수 (세로 목록)
+	private int pageSize = 10;		// 보여질 페이지 번호 개수 (가로 버튼)
 	
 	// 가장 첫페이지는 당연히 1페이지 -> 그래서 minPage는 따로없음
 	private int maxPage;			// 마지막 페이지 번호
@@ -23,6 +23,7 @@ public class Pagination {
 	// 기본 생성자를 만들지 않은 이유 > 필요가 없음!
 	// 매개변수에 들어오는 내용이 없음 > 값을 계산할 때 기준으로 삼을 수 없음
 	
+	// 기본값(Default)를 쓸 때
 	public Pagination(int currentPage, int listCount) {
 		super();
 		this.currentPage = currentPage;
@@ -79,21 +80,26 @@ public class Pagination {
 		return nextPage;
 	}
 
+	// 값의 변화에 대응하기 위해 > setter가 필요 >> calculate()에 사용하는 변수들
+	// 사용자가 1페이지를 보다 > 다른 페이지를 클릭하면 > 값이 변화해야 > 재계산이 필요 (직접 입력하는 값이 아닌 경우)
 	public void setCurrentPage(int currentPage) {
 		this.currentPage = currentPage;
 		calculate();
 	}
 
+	// 목록 개수를 변경할 때 사용(10개씩 보기, 20개씩 보기 등...)
 	public void setListCount(int listCount) {
 		this.listCount = listCount;
 		calculate();
 	}
 
+	// 하단 버튼 개수를 동적으로 조절해야 할 때 사용됨
 	public void setLimit(int limit) {
 		this.limit = limit;
 		calculate();
 	}
 
+	// 검색 결과가 0일 때 등 강제로 값을 고정해야 할 때
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 		calculate();
@@ -116,6 +122,7 @@ public class Pagination {
 		
 		// startPage : 페이지 번호 목록의 시작 번호
 		// 페이지 번호 목록이 10(pageSize)개씩 보여지는 경우 > 현재 페이지가 1~10page 사이 : 1page, 11~20page 사이 : 11page
+		// 현재 페이지에서 1을 빼서 > 0부터 시작하게 만듦 > page Size로 나눠 몇 번째 묶음인지 알아내 > +1로 묶음의 시작 번호 보정
 		startPage = (currentPage - 1) / pageSize * pageSize + 1;
 		
 		// endPage : 페이지 번호 목록의 끝 번호 > 현재 페이지가 1~10page 사이 : 10page, 11~20page 사이 : 20page
