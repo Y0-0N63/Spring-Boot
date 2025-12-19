@@ -3,7 +3,9 @@ package edu.kh.project.board.model.service;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
@@ -94,5 +96,83 @@ public class EditBoardServiceImpl implements EditBoardService {
 		}
 		
 		return boardNo;
+	}
+
+	// 게시글 수정 서비스
+	@Override
+	public int boardUpdate(Board inputBoard, List<MultipartFile> images, String deleteOrderList) throws Exception {
+		
+		// 제목, 내용 : BOARD > 성공했을 때 > 이미지 : BOARD_IMG
+		// 1-1. 게시글 부분(제목, 내용) 수정
+		int result = mapper.boardUpdate(inputBoard);
+		
+		// 1-2. 수정 실패 시 바로 return
+		if(result == 0) return 0;
+		
+		// 1-3. 수정 성공 시 > 2. 이미지 수정 과정으로
+		// 2-1. 기존에 이미지 존재했으나 > 이미지를 삭제했을 경우(deleteOrderList의 값이 존재하는 경우)
+		if(deleteOrderList != null && !deleteOrderList.equals("")) {
+			Map<String, Object> map = new HashMap<>();
+			map.put("deleteOrderList", deleteOrderList);
+			map.put("boardNo", inputBoard.getBoardNo());
+			
+			// BOARD_IMG에 존재하는 행을 삭제하는 SQL 호출
+			result = mapper.deleteImg(map);
+			
+			// 삭제에 실패한 경우 > 게시글 제목, 본문을 수정한 것까지 롤백해주기 > throw Exception
+			if(result == 0) {
+				throw new RuntimeException();
+			}
+		}
+		
+		// 3. 선택한 파일이 존재할 경우 (클라이언트가 실제로 업로드한 이미지가 존재하는 경우)
+		// images 안의 multipart 객체 중 실제로 값이 있는 객체만 > DB로 (> 게시글 작성 서비스와 동일한 로직)
+		// 실제로 업로드된 이미지만 모아둘 List 생성
+		List<BoardImg> uploadList = new ArrayList<>();
+		
+		// images 리스트에서 요소를 하나씩 꺼내 > 실제로 파일이 존재하는지 검사
+		for(int i = 0; i < images.size(); i++) {
+			// 실제 파일이 제출된 경우
+			if(!images.get(i).isEmpty()) {
+
+				String originalName = images.get(i).getOriginalFilename(); // 원본명
+				
+				String rename = Utility.fileRename(originalName); // 변경명
+				
+				// 모든 값을 저장할 boardImg DTO로 객체 생성
+				BoardImg img = BoardImg.builder().imgOriginalName(originalName).imgRename(rename).imgPath(webPath)
+							.boardNo(inputBoard.getBoardNo()).imgOrder(i).uploadFile(images.get(i)).build();
+				
+				uploadList.add(img); // img를 uploadList에 추가
+				
+				// 4. 업로드하려는 이미지의 정보인 > img 객체를 이용해 > 수정 or 삽입 결정
+				// 4-1. 기존에 존재 > 새 이미지로 변경 >> 수정
+				result = mapper.updateImage(img);
+				
+				// 4-2. 기존에 존재하지 않는 경우 > result(UPDATE) 값이 0 > 삽입
+				if(result == 0) {
+					// 수정 실패(기존에 존재하지 않으니 수정할 수 없음) = 기존 해당 순서(IMG_ORDER)에 이미지가 없었음
+					// > 삽입 수행(새 이미지 추가)
+					result = mapper.insertImage(img);
+				}
+			}
+			
+			// 수정 or 삽입 or 삭제가 실패한 경우
+			if(result == 0) {
+				throw new RuntimeException(); // 롤백
+			}
+		}
+
+		// 선택한 파일이 없을 경우
+		if(uploadList.isEmpty()) {
+			return result;
+		}
+		
+		// 선택한 파일이 존재 > 수정한 새 이미지 파일을 서버에 저장해야
+		for(BoardImg img : uploadList) {
+			img.getUploadFile().transferTo(new File(folderPath + img.getImgRename()));
+		}
+		
+		return result;
 	}
 }

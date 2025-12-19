@@ -47,4 +47,37 @@
 			FROM DUAL
 		</foreach>
 	</insert>
+	
+	<update id="boardUpdate">
+		UPDATE "BOARD" SET
+		BOARD_TITLE = #{boardTitle},
+		BOARD_CONTENT = #{boardContent}
+		WHERE BOARD_CODE = #{boardCode}
+		AND BOARD_NO = #{boardNo}
+		AND MEMBER_NO = #{memberNo}
+	</update>
+	
+	<!-- 게시글 이미지 삭제
+		#{} : 해당 컬럼 자료형에 맞는 리터럴 변환 (ex_양쪽에 홑따옴표(')를 붙여주기...)
+		${} : sql에 값 그대로 추가 ('' 존재 X) > sql 문법(IN) 고려하여 ${}로 작성 -->
+	<delete id="deleteImg">
+		DELETE FROM "BOARD_IMG"
+		WHERE IMG_ORDER IN (${deleteOrderList})
+		AND BOARD_NO = #{boardNo}
+	</delete>
+	
+	<!-- 게시글 이미지 수정 SQL -->
+	<update id="updateImage">
+		UPDATE "BOARD_IMG"
+		SET IMG_ORIGINAL_NAME = #{imgOriginalName},
+		IMG_RENAME = #{imgRename}
+		WHERE BOARD_NO = #{boardNo}
+		AND IMG_ORDER = #{imgOrder}
+	</update>
+	
+	<!-- 게시글 이미지 삽입 SQL -->
+	<insert id="insertImage">
+		INSERT INTO "BOARD_IMG"
+		VALUES(NEXT_IMG_NO(), #{imgPath}, #{imgOriginalName}, #{imgRename}, #{imgOrder}, #{boardNo})
+	</insert>
 </mapper>

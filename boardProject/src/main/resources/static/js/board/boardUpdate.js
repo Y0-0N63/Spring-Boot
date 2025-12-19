@@ -3,13 +3,10 @@
 //const previewList = document.querySelectorAll('img.preview');
 //const orderList = [];  기존에 존재하던 이미지의 순서(order)를 기록할 배열
 
-// X버튼이 눌러져 삭제되는 이미지의 
-// 순서(order)를 기록하는 Set
+// X버튼이 눌러져 삭제되는 이미지의 순서(order)를 기록하는 Set
 const deleteOrderList = new Set();
 // Set : 중복된 값을 저장 못하게하는 객체(Java Set 똑같음)
-// * Set을 사용하는 이유 : 
-// X 버튼이 눌러질 때 마다 order가 저장될 예정인데
-// 중복되는 값을 저장 못하게 하기 위해서
+// *Set을 사용하는 이유 : X 버튼이 눌러질 때 마다 order가 저장될 예정 > 중복되는 값을 저장 못하게 하기 위해서
 
 // input type="file" 태그들
 const inputImageList = document.getElementsByClassName("inputImage");
@@ -19,8 +16,6 @@ const deleteImageList = document.getElementsByClassName("delete-image");
 
 // 마지막으로 선택된 파일을 저장할 배열
 const lastValidFiles = [null, null, null, null, null];
-
-
 
 /** 미리보기 함수
  * @param  file : <input type="file"> 에서 선택된 파일
@@ -54,19 +49,17 @@ const updatePreview = (file, order) => {
 	// 선택된 이미지 백업
 	lastValidFiles[order] = file;
 
-	// 현재 선택 파일 임지 URL 생성 후 미리보기 img 태그에 대입
+	// 현재 선택 파일 이미지 URL 생성 후 미리보기 img 태그에 대입
 	const newImageUrl = URL.createObjectURL(file) // 임시 URL 생성
 	previewList[order].src = newImageUrl; // 미리보기 img 태그에 대입
 	
-	// deleteOrderList에서 해당 이미지 순서를 삭제
-	// -> 왜?? 이전에 X 버튼을 눌러 삭제 기록이 있을 수도 있기 때문에
+	// deleteOrderList에서 해당 이미지 순서를 삭제 -> 왜? 이전에 X 버튼을 눌러 삭제 기록이 있을 수도 있기 때문에
 	deleteOrderList.delete(order);
 }
 
 
 /* input태그, x버튼에 이벤트 리스너 추가 */
 for (let i = 0; i < inputImageList.length; i++) {
-
 	// input 태그에 이미지 선택 시 미리보기 함수 호출
 	inputImageList[i].addEventListener("change", e => {
 		const file = e.target.files[0];
@@ -92,29 +85,21 @@ for (let i = 0; i < inputImageList.length; i++) {
 
 			return;
 		}
-
 		updatePreview(file, i);
 	})
 
-
-
 	/* X 버튼 클릭 시 미리보기, 선택된 파일 삭제 */
 	deleteImageList[i].addEventListener("click", () => {
-
 		previewList[i].src = ""; // 미리보기 삭제
 		inputImageList[i].value = ""; // 선택된 파일 삭제
 		lastValidFiles[i] = null; // 백업 파일 삭제
 
-		// 기존에 존재하던 이미지가 있는 상태에서
-		// X 버튼이 눌러 졌을 때
-		// --> 기존에 이미지가 있었는데 
-		//     i번째 이미지 X버튼 눌러서 삭제함 --> DELETE 수행
+		// 기존에 존재하던 이미지가 있는 상태에서 X 버튼이 눌러졌을 때
+		// -> 기존에 이미지가 있었는데 i번째 이미지 X버튼 눌러서 삭제함 --> DELETE 수행
 		if (orderList.includes(i)) {
 			deleteOrderList.add(i);
 		}
-
 	})
-
 } // for end
 
 // -----------------------------------------------------------------------
@@ -142,15 +127,12 @@ form.addEventListener("submit", e => {
 	}
 
 
-	// 제출 전에 form 태그 마지막 자식으로
-	// input 추가 한 후 제출
-	// -> 해당 input에는
-	//   삭제된 이미지 순서(deleteOrderList)를 추가
+	// 제출 전에 form 태그 마지막 자식으로 input 추가 한 후 제출 -> 해당 input에는 삭제된 이미지 순서(deleteOrderList)를 추가
 
 	const input = document.createElement("input");
 
 	// Array.from() : Set -> Array로 변환
-	// 배열.toString() : [1,2,3] --> "1,2,3" 변환
+	// 배열.toString() : [1,2,3] --> "1,2,3" 변환 > input.value로 추가
 	input.value = Array.from(deleteOrderList).toString();
 
 	console.log("삭제된 이미지 리스트 : " + input.value);
@@ -158,6 +140,6 @@ form.addEventListener("submit", e => {
 	input.name = "deleteOrderList";
 	input.type = "hidden";
 
+	// <input type="hidden" name="deleteOrderList" value="1,2,3"/>
 	form.append(input); // 자식으로 input 추가
-
 })

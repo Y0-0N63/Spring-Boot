@@ -555,7 +555,7 @@ SELECT * FROM BOARD_LIKE;
 
 -- SEQ_IMG_NO 시퀀스의 다음 값을 반환하는 함수 생성
 
--- 전체 드래그 ALT+X
+-- 전체 드래그 ALT+X (함수 생성)
 CREATE OR REPLACE FUNCTION NEXT_IMG_NO
 -- 반환형
 RETURN NUMBER
