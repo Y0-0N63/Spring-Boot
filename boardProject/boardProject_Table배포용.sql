@@ -1,3 +1,12 @@
+-- '/', -1 : 뒤에서부터 시작해 '/'의 위치를 알아내기
+-- +1 '/' 다음부터 잘라내기 위해(문자열만 가지고 오기 위해)
+-- UNION 시 문자 집합이 일치하지 않습니다 > VARCHAR, NVARCHAR > 캐스팅(형 변환) 필요
+SELECT SUBSTR(PROFILE_IMG, INSTR(PROFILE_IMG, '/', -1) + 1) "rename"
+FROM "MEMBER"
+UNION 
+SELECT CAST(IMG_RENAME AS VARCHAR2(300)) "rename"
+FROM "BOARD_IMG";
+
 SELECT * FROM MEMBER;
 UPDATE "MEMBER" SET MEMBER_DEL_FL = 'Y'
 WHERE MEMBER_NO = 3;

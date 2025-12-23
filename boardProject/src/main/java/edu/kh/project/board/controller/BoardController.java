@@ -49,7 +49,8 @@ public class BoardController {
 	 * @return
 	 */
 		@GetMapping("{boardCode:[0-9]+}")
-	public String selectBoardList(@PathVariable("boardCode") int boardCode, @RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
+	public String selectBoardList(@PathVariable("boardCode") int boardCode,
+								@RequestParam(value = "cp", required = false, defaultValue = "1") int cp,
 								Model model, @RequestParam Map<String, Object> paramMap) {
 
 		// 조회 서비스 호출 후 결과 반환

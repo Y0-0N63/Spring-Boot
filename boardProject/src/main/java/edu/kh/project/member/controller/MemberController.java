@@ -34,13 +34,14 @@ public class MemberController {
 	 * @param inputMember : 커맨드 객체로 @ModelAttribute는 생략 가능
 	 * 					  : memberEmail, memberPw가 세팅된 상태
 	 * @return
+	 * @throws Exception 
 	 */
 	@PostMapping("login")
 	// Model : 기본값이 request scope > @sessionAttributes와 함께 사용하면 session scope로 변경 가능
 	public String login(/* @ModelAttribute */ Member inputMember, RedirectAttributes ra, Model model,
-					@RequestParam(value="saveId", required = false) String saveId, HttpServletResponse resp) {
+					@RequestParam(value="saveId", required = false) String saveId, HttpServletResponse resp) throws Exception {
 		// 로그인 서비스 호출
-		try {
+//		try {
 			Member loginMember = service.login(inputMember);
 			// 올바른 비밀번호 입력 > loginMember : Member(memberNo=1, memberEmail=user01@kh.or.kr, memberPw=null, memberNickname=유저일, memberTel=01012341234...
 			// 잘못된 비밀번호 입력 > loginMember : null
@@ -74,10 +75,10 @@ public class MemberController {
 				resp.addCookie(cookie);
 			}
 			
-		} catch (Exception e) {
-			log.info("로그인 중 예외 발생");
-			e.printStackTrace();
-		}
+//		} catch (Exception e) {
+//			log.info("로그인 중 예외 발생");
+//			e.printStackTrace();
+//		}
 		
 		return "redirect:/";
 	}
