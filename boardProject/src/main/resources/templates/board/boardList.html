@@ -187,8 +187,9 @@
 			<!-- 현재 : /board/1 
 				목표 : /board/1?key=w&query=짱구 -->
 				<!-- @ : URL을 만들기 위한 시작, {boardCode} : URL 경로의 일부로 사용될 경로 변수, (...) : 변수 값 지정	(PathVariable)-->
+			<!-- req에 실린 boardCode를 사용해(@PathVariable) 주소 생성 -->
 			<form th:action="@{{boardCode}(boardCode=${boardCode})}" method="get" id="boardSearch">
-
+				<!-- 선택 옵션에 따라 > key는 유지, value 값은 변화 -->
 				<select name="key" id="searchKey">
 					<option value="t">제목</option>
 					<option value="c">내용</option>
@@ -196,8 +197,10 @@
 					<option value="w">작성자</option>
 				</select>
 
+				<!-- query=안녕 < 처럼 사용자가 입력한 값이 value로 들어옴 -->
 				<input type="text" name="query" id="searchQuery" placeholder="검색어를 입력해주세요.">
 
+				<!-- 최종적으로 key=w&query=안녕 의 형태로 파라미터 값으로 붙어서 넘어감(GET, URL에 파라미터 값 노출) -->
 				<button>검색</button>
 			</form>
 		</section>
