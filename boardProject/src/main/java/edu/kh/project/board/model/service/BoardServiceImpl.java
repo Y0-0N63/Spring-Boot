@@ -14,7 +14,7 @@ import edu.kh.project.board.model.dto.Pagination;
 import edu.kh.project.board.model.mapper.BoardMapper;
 import lombok.extern.slf4j.Slf4j;
 
-@Transactional(rollbackFor = Exception.class)
+@Transactional(rollbackFor = Exception.class) // AOP가 적용되어있음
 @Service
 @Slf4j
 public class BoardServiceImpl implements BoardService {
