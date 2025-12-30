@@ -38,7 +38,7 @@ targetInput.addEventListener("input", e => {
 	}
 
 
-	// 입력된게 있을 때
+	// 입력된 게 있을 때
 	if(query.length > 0){
 		fetch("/chatting/selectTarget?query="+query)
 		.then(resp => resp.json())
