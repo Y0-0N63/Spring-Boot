@@ -124,6 +124,7 @@ function chattingEnter(e){
 // 비동기로 채팅방 목록 조회
 function selectRoomList(){
 	fetch("/chatting/roomList")
+	// .json() : JSON -> JS 객체
 	.then(resp => resp.json())
 	.then(roomList => {
 		console.log(roomList);
@@ -167,15 +168,13 @@ function selectRoomList(){
 
 			const targetName = document.createElement("span");
 			targetName.classList.add("target-name");
-			targetName.innerText = room.targetNickName;
+			targetName.innerText = room.targetNickname;
 			
 			const recentSendTime = document.createElement("span");
 			recentSendTime.classList.add("recent-send-time");
 			recentSendTime.innerText = room.sendTime;
 			
-			
 			p.append(targetName, recentSendTime);
-			
 			
 			const div = document.createElement("div");
 			
@@ -185,12 +184,11 @@ function selectRoomList(){
 			if(room.lastMessage != undefined){
 				recentMessage.innerHTML = room.lastMessage;
 			}
-			
-			div.append(recentMessage);
 
+			div.append(recentMessage);
 			itemBody.append(p,div);
 
-			// 현재 채팅방을 보고있는게 아니고 읽지 않은 개수가 0개 이상인 경우 -> 읽지 않은 메세지 개수 출력
+			// 현재 채팅방을 보고있는게 아니고 읽지 않은 개수가 0개 이상인 경우 > 읽지 않은 메세지 개수 출력
 			if(room.notReadCount > 0 && room.chattingRoomNo != selectChattingNo ){
 			// if(room.chattingRoomNo != selectChattingNo ){
 				const notReadCount = document.createElement("p");
@@ -199,8 +197,7 @@ function selectRoomList(){
 				div.append(notReadCount);
 			}else{
 
-				// 현재 채팅방을 보고있는 경우
-				// 비동기로 해당 채팅방 글을 읽음으로 표시
+				// 현재 채팅방을 보고있는 경우 > 비동기로 해당 채팅방 글을 읽음으로 표시
 				fetch("/chatting/updateReadFlag",{
 					method : "PUT",
 					headers : {"Content-Type": "application/json"},
@@ -209,28 +206,17 @@ function selectRoomList(){
 				.then(resp => resp.text())
 				.then(result => console.log(result))
 				.catch(err => console.log(err));
-
 			}
-			
-
 			li.append(itemHeader, itemBody);
 			chattingList.append(li);
 		}
-
 		roomListAddEvent();
 	})
 	.catch(err => console.log(err));
-
 }
-
-
-
-
-
 
 // 채팅 메세지 영역
 const display = document.getElementsByClassName("display-chatting")[0];
-
 
 // 채팅방 목록에 이벤트를 추가하는 함수 
 function roomListAddEvent(){
@@ -266,12 +252,9 @@ function roomListAddEvent(){
 	}
 }
 
-
-
-
-// 비동기로 메세지 목록을 조회하는 함수
+// 비동기로 메세지 목록을 조회하는 함수 (화면에서 목록에 떠있는 회원을 클릭했을 때 > 채팅방의 메세지 내역을 보여줌)
+// selectChattingNo : 전역변수로 다른 함수에 의해 세팅될 수 있음
 function selectChattingFn() {
-
 	fetch("/chatting/selectMessage?"+`chattingRoomNo=${selectChattingNo}&memberNo=${loginMemberNo}`)
 	.then(resp => resp.json())
 	.then(messageList => {
@@ -282,7 +265,7 @@ function selectChattingFn() {
 
 		// <ul class="display-chatting">
 		const ul = document.querySelector(".display-chatting");
-
+		
 		ul.innerHTML = ""; // 이전 내용 지우기
 
 		// 메세지 만들어서 출력하기
@@ -303,40 +286,29 @@ function selectChattingFn() {
 			// 내가 작성한 메세지인 경우
 			if(loginMemberNo == msg.senderNo){ 
 				li.classList.add("my-chat");
-				
 				li.append(span, p);
-				
 			}else{ // 상대가 작성한 메세지인 경우
 				li.classList.add("target-chat");
 
-				// 상대 프로필
-				// <img src="/resources/images/user.png">
+				// 상대 프로필 : <img src="/resources/images/user.png">
 				const img = document.createElement("img");
 				img.setAttribute("src", selectTargetProfile);
-				
 				const div = document.createElement("div");
 
 				// 상대 이름
 				const b = document.createElement("b");
 				b.innerText = selectTargetName; // 전역변수
-
 				const br = document.createElement("br");
 
 				div.append(b, br, p, span);
 				li.append(img,div);
-
 			}
-
 			ul.append(li);
 			display.scrollTop = display.scrollHeight; // 스크롤 제일 밑으로
 		}
-
 	})
 	.catch(err => console.log(err));
-
-
 }
-
 
 // ----------------------------------------------------------------------------------------------------------------
 
@@ -349,8 +321,6 @@ let chattingSock;
 if(loginMemberNo != ""){
 	chattingSock = new SockJS("/chattingSock");
 }
-
-
 
 // 채팅 입력
 const send = document.getElementById("send");
@@ -387,19 +357,14 @@ inputChatting.addEventListener("keyup", e => {
 	}
 })
 
-
-
 // WebSocket 객체 chattingSock이 서버로 부터 메세지를 통지 받으면 자동으로 실행될 콜백 함수
 chattingSock.onmessage = function(e) {
 	// 메소드를 통해 전달받은 객체값을 JSON객체로 변환해서 obj 변수에 저장.
 	const msg = JSON.parse(e.data);
 	console.log(msg);
 
-
 	// 현재 채팅방을 보고있는 경우
 	if(selectChattingNo == msg.chattingRoomNo){
-
-
 		const ul = document.querySelector(".display-chatting");
 	
 		// 메세지 만들어서 출력하기
@@ -419,9 +384,7 @@ chattingSock.onmessage = function(e) {
 		// 내가 작성한 메세지인 경우
 		if(loginMemberNo == msg.senderNo){ 
 			li.classList.add("my-chat");
-			
 			li.append(span, p);
-			
 		}else{ // 상대가 작성한 메세지인 경우
 			li.classList.add("target-chat");
 	
@@ -429,7 +392,6 @@ chattingSock.onmessage = function(e) {
 			// <img src="/resources/images/user.png">
 			const img = document.createElement("img");
 			img.setAttribute("src", selectTargetProfile);
-			
 			const div = document.createElement("div");
 	
 			// 상대 이름

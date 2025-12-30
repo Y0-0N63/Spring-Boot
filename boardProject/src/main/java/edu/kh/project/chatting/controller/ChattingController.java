@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.SessionAttribute;
 
 import edu.kh.project.chatting.model.dto.ChattingRoom;
+import edu.kh.project.chatting.model.dto.Message;
 import edu.kh.project.chatting.model.service.ChattingService;
 import edu.kh.project.member.model.dto.Member;
 
@@ -76,5 +77,28 @@ public class ChattingController {
 		}
 		
 		return chattingNo;
+	}
+	
+	/**
+	 * 채팅방 목록 조회(비동기)
+	 * @return service.selectRoomList(loginMember.getMemberNo())
+	 * List -> JSON 형태로 변환되어 JS로 전달
+	 */
+	@GetMapping("roomList")
+	@ResponseBody
+	public List<ChattingRoom> selectRoomList(@SessionAttribute("loginMember") Member loginMember) {
+		
+		return service.selectRoomList(loginMember.getMemberNo());
+	} 
+	
+	/**
+	 * 메세지 목록 조회(비동기)
+	 * @RequestParamMap <String, Integer> paramMap: chattingRoomNo=${selectChattingNo}&memberNo=${loginMemberNo}
+	 */
+	@GetMapping("selectMessage")
+	@ResponseBody
+	public List<Message> selectMessageList(@RequestParam Map<String, Integer> paramMap) {
+		
+		return service.selectMessageList(paramMap);
 	}
 }

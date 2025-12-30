@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import edu.kh.project.chatting.model.dto.ChattingRoom;
+import edu.kh.project.chatting.model.dto.Message;
 import edu.kh.project.member.model.dto.Member;
 
 public interface ChattingService {
@@ -20,4 +21,6 @@ public interface ChattingService {
 	// 새로운 채팅방 생성 서비스
 	int createChattingRoom(Map<String, Integer> map);
 
+	// 채팅 메세지 조회 서비스
+	List<Message> selectMessageList(Map<String, Integer> paramMap);
 }

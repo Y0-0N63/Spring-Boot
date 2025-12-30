@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import edu.kh.project.chatting.model.dto.ChattingRoom;
+import edu.kh.project.chatting.model.dto.Message;
 import edu.kh.project.chatting.model.mapper.ChattingMapper;
 import edu.kh.project.member.model.dto.Member;
 import lombok.extern.slf4j.Slf4j;
@@ -53,6 +54,21 @@ public class ChattingServiceImpl implements ChattingService {
 		}
 		
 		return 0;
+	}
+
+	// 채팅 메세지 조회 서비스
+	@Override
+	public List<Message> selectMessageList(Map<String, Integer> paramMap) {
+		
+		List<Message> messageList = mapper.selectMessageList(paramMap.get("chattingRoomNo"));
+		
+		// 해당 채팅방에서 기존에 나누었던 메세지의 목록이 있다면 > 읽음 처리
+		if(!messageList.isEmpty()) {
+			// 결과값을 다루지 않기 때문에 > update된 행의 개수를 받아주지 않고 메서드를 호출하기만 해도 됨
+			mapper.updateReadFlag(paramMap);
+		}
+		
+		return messageList;
 	}
 
 }

@@ -6,6 +6,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Mapper;
 
 import edu.kh.project.chatting.model.dto.ChattingRoom;
+import edu.kh.project.chatting.model.dto.Message;
 import edu.kh.project.member.model.dto.Member;
 
 @Mapper
@@ -23,4 +24,10 @@ public interface ChattingMapper {
 	// 새로운 채팅방 생성 SQL > 생성된 채팅방의 번호를 반환함
 	int createChattingRoom(Map<String, Integer> map);
 
+	// 메세지 목록 조회 SQL
+	// Integer chattingRoomNo > Object chattingRoomNo로 변경 : 채팅 목록의 프로필을 클릭했을 때 > 채팅방이 열림
+	List<Message> selectMessageList(Object chattingRoomNo);
+
+	// 채팅 메세지 읽음 처리 SQL
+	void updateReadFlag(Map<String, Integer> paramMap);
 }
