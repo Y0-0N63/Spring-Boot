@@ -49,7 +49,7 @@ targetInput.addEventListener("input", e => {
 
 			if(list.length == 0){
 				const li = document.createElement("li");
-				li.classList.add("result-row");
+				li.classList.add("result-row");``
 				li.innerText = "일치하는 회원이 없습니다";
 				resultArea.append(li);
 			}
