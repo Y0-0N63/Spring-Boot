@@ -37,7 +37,6 @@ targetInput.addEventListener("input", e => {
 		return;
 	}
 
-
 	// 입력된 게 있을 때
 	if(query.length > 0){
 		fetch("/chatting/selectTarget?query="+query)
@@ -49,7 +48,7 @@ targetInput.addEventListener("input", e => {
 
 			if(list.length == 0){
 				const li = document.createElement("li");
-				li.classList.add("result-row");``
+				li.classList.add("result-row");
 				li.innerText = "일치하는 회원이 없습니다";
 				resultArea.append(li);
 			}
@@ -58,6 +57,8 @@ targetInput.addEventListener("input", e => {
 				// li요소 생성(한 행을 감싸는 요소)
 				const li = document.createElement("li");
 				li.classList.add("result-row");
+				// <li class="result-row" data-id="속성값"/>을 의미
+				// > 해당 줄을 클릭했을 때 DB에 해당 회원과 채팅하겠음을 의미(INSERT)를 해야 하기 때문(chattingEnter)
 				li.setAttribute("data-id", member.memberNo);
 
 				// 프로필 이미지 요소
@@ -81,16 +82,14 @@ targetInput.addEventListener("input", e => {
 				// li요소에 클릭 시 채팅방에 입장하는 이벤트 추가
 				li.addEventListener('click', chattingEnter);
 			}
-
 		})
 		.catch(err => console.log(err) );
 	}
 });
 
 
-// 채팅방 입장 또는 선택 함수
+// 새로운 채팅방 입장 또는 기존 채팅방 선택 함수
 function chattingEnter(e){
-
 	console.log(e.target); // 실제 클릭된 요소
 	console.log(e.currentTarget); // 이벤트 리스트가 설정된 요소
 
@@ -115,9 +114,7 @@ function chattingEnter(e){
 					return;
 				}
 			}
-
 		}, 200);
-
 	})
 	.catch(err => console.log(err));
 }
@@ -126,7 +123,6 @@ function chattingEnter(e){
 
 // 비동기로 채팅방 목록 조회
 function selectRoomList(){
-
 	fetch("/chatting/roomList")
 	.then(resp => resp.json())
 	.then(roomList => {

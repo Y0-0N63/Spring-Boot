@@ -43,4 +43,35 @@
 		OR PARTICIPANT = #{memberNo}
 		ORDER BY MAX_MESSAGE_NO DESC NULLS LAST
 	</select>
+	
+	<!-- 채팅 상대 검색 SQL
+		#{} : 홑따옴표가 붙은 상태로 값이 들어옴
+		${} : 홑따옴표가 붙지 않고, 해당 자리에 값만 들어옴 -->
+	<select id="selectTarget">
+		SELECT MEMBER_NO, MEMBER_EMAIL, MEMBER_NICKNAME, PROFILE_IMG
+		FROM "MEMBER"
+		WHERE (MEMBER_EMAIL LIKE '%${query}%' OR MEMBER_NICKNAME LIKE '%${query}%')
+		AND MEMBER_DEL_FL = 'N'
+		AND MEMBER_NO != #{memberNo}
+	</select>
+	
+	<!-- 채팅방 번호 검색 -->
+	<select id="checkChattingRoomNo">
+		SELECT NVL(SUM(CHATTING_ROOM_NO), 0) CHATTING_ROOM_NO
+		FROM CHATTING_ROOM
+		WHERE (OPEN_MEMBER = #{loginMemberNo} AND PARTICIPANT = #{targetNo})
+		OR (OPEN_MEMBER = #{targetNo} AND PARTICIPANT = #{loginMemberNo})
+	</select>
+	
+	<!-- 채팅방 생성
+		selectKey keyProperty="chattingRoomNo" : 조회한 SEQ_ROOM_NO를 chattingRoomNo에 대입함
+		INSERT한 결과 값으로 생성한 채팅방 번호를 return하고자 함 > DTO를 사용할 경우, 자동으로 필드값에 세팅해줌
+		> Map을 사용할 경우 자동으로 chattingRoomNo key를 만들어 세팅해주고 이를 service단에서 사용할 수 있음 -->
+	<insert id="createChattingRoom" parameterType="map" useGeneratedKeys="true">
+		<selectKey keyProperty="chattingRoomNo" order="BEFORE" resultType="_int">
+			SELECT SEQ_ROOM_NO.NEXTVAL FROM DUAL
+		</selectKey>
+		INSERT INTO CHATTING_ROOM
+		VALUES(#{chattingRoomNo}, DEFAULT, #{loginMemberNo}, #{targetNo})
+	</insert>
 </mapper>
