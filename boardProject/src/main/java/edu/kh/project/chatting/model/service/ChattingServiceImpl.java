@@ -77,7 +77,7 @@ public class ChattingServiceImpl implements ChattingService {
 		return mapper.updateReadFlag(paramMap);
 	}
 
-	
+	// 채팅 입력 서비스
 	@Override
 	public int insertMessage(Message msg) {
 		return mapper.insertMessage(msg);

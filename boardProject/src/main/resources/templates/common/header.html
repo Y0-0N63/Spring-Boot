@@ -37,9 +37,12 @@
   <section></section>
 </header>
 
-<!-- navigator -->
+<!-- navigator : 기존 하드코딩한 내용을 수정함 -->
 <nav>
   <ul>
+    <!-- th:block : 반복문 수행 후 사라짐 
+        boardType => {"boardCode" : 1, "boardName" : 공지게시판}
+        주소 조합 방법 -> {}를 통해 변수 선언 후 () 안에 변수에 넣어줄 값을 작성 -->
     <th:block th:each="boardType : ${application.boardTypeList}">
       <li>
           <a th:href="@{/board/{boardCode}(boardCode=${boardType.boardCode})}"

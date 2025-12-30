@@ -22,8 +22,8 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class BoardTypeInterceptor implements HandlerInterceptor {
 	
-	@Autowired // 의존성 주입(DI) : BoardService의 타입이거나 상속 관계인 객체(Bean) 주입
-	private BoardService service;
+	@Autowired // 의존성 주입(DI) : BoardService의 타입과 일치하거나 상속 관계인 객체(Bean) 주입
+	private BoardService service; // BoardService는 인터페이스이기 때문에 BoardService를 상속받는 BoardServiceImpl이 Bean으로 등록됨
 	
 	// 전처리 : 요청이 컨트롤러로 들어오기 전에 실행되는 메서드
 	@Override
@@ -32,13 +32,14 @@ public class BoardTypeInterceptor implements HandlerInterceptor {
 
 		// boardType을 DB에서 얻어오기 > List 형태로(boardTypeList) > application scope에 저장하기
 		// application scope : 서버 시작부터 종료 시까지 유지되는 Servlet 내장 객체, 서버 내에 딱 한 개만 존재 > 모든 클라이언트가 공용으로 사용
+		// session scope : client가 요청하기 전까지 뜨지 않을 수 있으며, 모든 client에게 발급됨
 		
 		// application scope 객체 얻어오기
 		ServletContext application = request.getServletContext();
 		
-		// application scope에 "boardTypeList"가 없을 경우
+		// application scope에 "boardTypeList"가 없을 경우 > 요청이 들어올 때마다 service를 호출할 필요가 없음
 		if(application.getAttribute("boardTypeList") == null) {
-			// boardTypeList 조회 서비스 호출
+			// >> 튜boardTypeList 조회 서비스 호출
 			List<Map<String, Object>> boardTypeList = service.selectBoardTypeList();
 			
 			log.debug("boardTypeList : " + boardTypeList);

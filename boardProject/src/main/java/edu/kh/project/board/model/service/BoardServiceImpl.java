@@ -23,6 +23,7 @@ public class BoardServiceImpl implements BoardService {
 	private BoardMapper mapper;
 
 	// 게시판 종류 조회 서비스
+	// DTO가 없기 때문에 Map을 사용함 (계속 사용되는 속성이 아니므로 DTO로 생성하는 것보다는 Map이 유리)
 	@Override
 	public List<Map<String, Object>> selectBoardTypeList() {
 		return mapper.selectBoardTypeList();
