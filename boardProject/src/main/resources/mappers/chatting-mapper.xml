@@ -91,4 +91,10 @@
 		WHERE CHATTING_ROOM_NO = #{chattingRoomNo}
 		AND SENDER_NO != #{memberNo}
 	</update>
+	
+	<!-- 채팅 메시지 삽입 -->
+	<insert id="insertMessage">
+		INSERT INTO "MESSAGE"
+		VALUES(SEQ_MESSAGE_NO.NEXTVAL, #{messageContent}, DEFAULT, DEFAULT, #{senderNo}, #{chattingRoomNo})
+	</insert>
 </mapper>

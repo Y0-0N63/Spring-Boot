@@ -29,5 +29,8 @@ public interface ChattingMapper {
 	List<Message> selectMessageList(Object chattingRoomNo);
 
 	// 채팅 메세지 읽음 처리 SQL
-	void updateReadFlag(Map<String, Integer> paramMap);
+	int updateReadFlag(Map<String, Object> paramMap);
+
+	// 채팅 입력 SQL
+	int insertMessage(Message msg);
 }

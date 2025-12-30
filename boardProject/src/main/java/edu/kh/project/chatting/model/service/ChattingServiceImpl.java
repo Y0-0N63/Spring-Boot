@@ -58,7 +58,7 @@ public class ChattingServiceImpl implements ChattingService {
 
 	// 채팅 메세지 조회 서비스
 	@Override
-	public List<Message> selectMessageList(Map<String, Integer> paramMap) {
+	public List<Message> selectMessageList(Map<String, Object> paramMap) {
 		
 		List<Message> messageList = mapper.selectMessageList(paramMap.get("chattingRoomNo"));
 		
@@ -69,6 +69,18 @@ public class ChattingServiceImpl implements ChattingService {
 		}
 		
 		return messageList;
+	}
+
+	// 읽음 표시 업데이트
+	@Override
+	public int updateReadFlag(Map<String, Object> paramMap) {
+		return mapper.updateReadFlag(paramMap);
+	}
+
+	
+	@Override
+	public int insertMessage(Message msg) {
+		return mapper.insertMessage(msg);
 	}
 
 }
